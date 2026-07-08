@@ -1,0 +1,2596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Nimrah Qureshi — Frontend Engineer & UI craftsperson. React, Next.js, Angular. National-scale platforms including NODP & RSU Sindh."/>
+  <meta name="author" content="Nimrah Qureshi"/>
+  <meta property="og:title" content="Nimrah Qureshi — Frontend Engineer"/>
+  <meta property="og:description" content="Enterprise frontend engineering — React, Next.js, and national-scale education platforms across Pakistan."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:image" content="download (19).jpg"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <title>Nimrah Qureshi — Frontend Engineer</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml"/>
+  <link rel="preload" href="download (19).jpg" as="image"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@200;300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+  <style>
+    /* ── HIGH-END DESIGN TOKENS ─────────────────────────── */
+    :root {
+      --bg-dark:       #0a0a0c;
+      --bg-panel:      #0e0e10;
+      --bg-panel-glow: #141416;
+      --gold-matte:    #d4b26f;
+      --gold-bright:   #f3e0be;
+      --gold-deep:     #9a7b43;
+      --text-main:     #ffffff;
+      --text-muted:    rgba(255, 255, 255, 0.72);
+      --text-dark:     rgba(255, 255, 255, 0.5);
+      --border-subtle: rgba(212, 178, 111, 0.15);
+      --border-focus:  rgba(212, 178, 111, 0.4);
+      --font-display:  'Cinzel', serif;
+      --font-sans:     'Montserrat', sans-serif;
+      --font-mono:     'Fira Code', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; background: var(--bg-dark); }
+
+    body {
+      background: var(--bg-dark);
+      color: #ffffff;
+      font-family: var(--font-sans);
+      font-weight: 300;
+      letter-spacing: 0.03em;
+      line-height: 1.625;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ── THREE.JS WEBGL CANVAS BACKGROUND LAYER ─────────── */
+    canvas.webgl {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none; /* Allows scrolling and clicks right through the bubbles */
+    }
+
+    .bg-veil {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: transparent;
+    }
+
+    /* ── MINIMAL CURSOR EFFECT ──────────────────────────── */
+    #cursor-dot {
+      position: fixed; top: 0; left: 0; width: 6px; height: 6px;
+      border-radius: 50%; background: var(--gold-bright);
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.05s;
+    }
+    #cursor-ring {
+      position: fixed; top: 0; left: 0; width: 40px; height: 40px;
+      border-radius: 50%; border: 1px solid var(--gold-matte);
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.15s ease-out, width 0.3s, height 0.3s, border-color 0.3s;
+    }
+    body:has(a:hover) #cursor-ring,
+    body:has(button:hover) #cursor-ring { 
+      width: 60px; height: 60px; 
+      border-color: var(--gold-bright);
+      background: rgba(243, 224, 190, 0.03);
+    }
+
+    /* ── SCROLLBAR ──────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: var(--gold-deep); }
+
+    /* ── LUXURY NAVIGATION ──────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.75rem 4rem;
+      background: linear-gradient(to bottom, rgba(6,6,6,0.9) 0%, transparent 100%);
+      backdrop-filter: blur(8px);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    nav.scrolled {
+      padding: 1.2rem 4rem;
+      background: rgba(14, 14, 16, 0.95);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem; font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.15em;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 3rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--text-muted); text-decoration: none;
+      position: relative; padding: 0.5rem 0;
+      transition: color 0.3s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0; width: 100%;
+      height: 1px; background: var(--gold-matte);
+      transform: scaleX(0); transform-origin: right;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .nav-links a:hover { color: #ffffff; }
+    .nav-links a.active { color: var(--gold-bright); }
+    .nav-links a.active::after { transform: scaleX(1); }
+    .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 44px;
+      height: 44px;
+      padding: 10px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(14, 14, 16, 0.65);
+      cursor: pointer;
+      z-index: 101;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 100%;
+      height: 1px;
+      background: #ffffff;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    body.nav-open .nav-toggle span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    body.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+    body.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    body.nav-open { overflow: hidden; }
+    body.nav-open::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 99;
+    }
+
+    /* ── SECTIONS BASE LAYOUT ───────────────────────────── */
+    section {
+      position: relative; padding: 10rem 10vw;
+      min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+      z-index: 10;
+      isolation: isolate;
+    }
+    .section-label {
+      font-family: var(--font-display); font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.5em; text-transform: uppercase;
+      color: #ffffff; margin-bottom: 1.2rem;
+      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.85);
+    }
+    .section-title {
+      font-family: var(--font-display); font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 400; color: #fff; line-height: 1.2;
+      margin-bottom: 2.5rem;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.85);
+    }
+    .divider {
+      width: 60px; height: 1px; background: var(--gold-matte); margin-bottom: 3.5rem;
+    }
+
+    /* ── HERO LAYOUT CONFIGURATION ──────────────────────── */
+    #hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(
+        105deg,
+        rgba(6, 6, 6, 0.42) 0%,
+        rgba(6, 6, 6, 0.26) 40%,
+        rgba(6, 6, 6, 0.08) 65%,
+        transparent 100%
+      );
+    }
+    #hero::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: min(38vh, 440px);
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(6, 6, 6, 0.28) 30%,
+        rgba(6, 6, 6, 0.62) 58%,
+        rgba(6, 6, 6, 0.88) 82%,
+        rgba(6, 6, 6, 0.96) 100%
+      );
+      z-index: 3;
+      pointer-events: none;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 820px;
+      padding: 2.5rem 3rem 2.5rem 0;
+    }
+    .hero-butterfly-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 12;
+      pointer-events: none;
+    }
+    .hero-content .hero-eyebrow,
+    .hero-content .hero-headline,
+    .hero-content .hero-stack,
+    .hero-content .hero-role,
+    .hero-content .hero-desc,
+    .hero-content .stat-val,
+    .hero-content .stat-lbl {
+      text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.95),
+        0 4px 20px rgba(0, 0, 0, 0.88),
+        0 0 40px rgba(6, 6, 6, 0.85);
+    }
+    .hero-content .hero-name {
+      text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.92),
+        0 6px 28px rgba(0, 0, 0, 0.88),
+        0 0 56px rgba(6, 6, 6, 0.8);
+    }
+    .hero-eyebrow {
+      font-family: var(--font-mono); font-size: 0.8rem;
+      color: #ffffff; letter-spacing: 0.25em; text-transform: uppercase;
+      margin-bottom: 1.75rem; display: flex; align-items: center; gap: 1rem;
+    }
+    .hero-eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: rgba(255, 255, 255, 0.6); }
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 8vw, 6.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+      color: #e8d9c0;
+    }
+    .name-gold {
+      font-weight: 900;
+      color: #e8d9c0;
+    }
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(1.25rem, 2.8vw, 1.85rem);
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.85rem;
+      line-height: 1.25;
+    }
+    .hero-stack {
+      font-family: var(--font-mono);
+      font-size: clamp(0.78rem, 1.4vw, 0.92rem);
+      letter-spacing: 0.08em;
+      color: var(--gold-bright);
+      margin-bottom: 1.75rem;
+    }
+    .hero-role {
+      font-family: var(--font-display); font-size: clamp(1.1rem, 2.5vw, 1.75rem);
+      font-weight: 400; color: #c9a86c; letter-spacing: 0.15em;
+      margin-bottom: 2.5rem; min-height: 2.5rem;
+    }
+    .hero-desc {
+      font-size: 1.05rem;
+      font-weight: 400;
+      line-height: 1.8;
+      color: #ece0cc;
+      max-width: 620px;
+      margin-bottom: 4rem;
+    }
+    .hero-desc strong {
+      color: #e8d9c0;
+      font-weight: 600;
+    }
+    
+    .hero-stats {
+      display: flex;
+      gap: 4.5rem;
+      margin-bottom: 4.5rem;
+      border-left: 1px solid var(--border-subtle);
+      padding-left: 2rem;
+    }
+    .stat-val { font-family: var(--font-display); font-size: 2.25rem; font-weight: 400; color: #ffffff; }
+    .stat-lbl { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255, 255, 255, 0.55); margin-top: 0.25rem; font-weight: 500; }
+    
+    .hero-ctas { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .btn-primary, .btn-secondary {
+      padding: 1.1rem 2.8rem;
+      font-family: var(--font-display); font-size: 0.75rem;
+      font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+      text-decoration: none; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: none;
+    }
+    .btn-primary { background: var(--gold-matte); color: var(--bg-dark); }
+    .btn-primary:hover { background: #fff; transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+    .btn-secondary { border: 1px solid var(--border-subtle); color: #fff; }
+    .btn-secondary:hover { border-color: #ffffff; color: #ffffff; transform: translateY(-3px); }
+
+    .scroll-hint {
+      position: absolute; bottom: 3rem; right: 10vw;
+      display: flex; align-items: center; gap: 1rem;
+      font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-dark);
+      z-index: 5;
+    }
+    .scroll-hint span { display: block; width: 40px; height: 1px; background: var(--text-dark); }
+
+    /* ── STYLISH ABOUT SECTION ──────────────────────────── */
+    #about {
+      position: relative;
+      overflow: hidden;
+      margin-top: clamp(-10rem, -16vh, -6rem);
+      margin-bottom: clamp(-8rem, -14vh, -5rem);
+      padding-top: calc(10rem + clamp(6rem, 16vh, 10rem));
+      padding-bottom: 8rem;
+      border-top: none;
+      border-bottom: none;
+      background-color: transparent;
+    }
+    #about::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: none;
+      z-index: 1;
+      pointer-events: none;
+    }
+    #about::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 0;
+      background: none;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .about-bg-slides {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image: url('download (19).jpg');
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.85) 12%,
+        #000 22%,
+        #000 78%,
+        rgba(0, 0, 0, 0.85) 88%,
+        transparent 100%
+      );
+      mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.85) 12%,
+        #000 22%,
+        #000 78%,
+        rgba(0, 0, 0, 0.85) 88%,
+        transparent 100%
+      );
+    }
+    .about-bg-slide {
+      position: absolute;
+      inset: 0;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      opacity: 0;
+      animation: aboutSlideFade 18s ease-in-out infinite;
+      will-change: opacity;
+    }
+    .about-bg-slide--19 { background-image: url('download (19).jpg'); animation-delay: 0s; }
+    .about-bg-slide--20 { background-image: url('download (20).jpg'); animation-delay: -6s; }
+    .about-bg-slide--23 { background-image: url('download (23).jpg'); animation-delay: -12s; }
+    @keyframes aboutSlideFade {
+      0%, 25% { opacity: 1; }
+      33%, 100% { opacity: 0; }
+    }
+    .about-grid { position: relative; z-index: 2; max-width: 100%; margin: 0 auto; }
+    #about .section-label {
+      color: var(--gold-matte);
+      font-weight: 600;
+      letter-spacing: 0.45em;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.65);
+    }
+    #about .section-title {
+      color: var(--gold-bright);
+      font-weight: 600;
+      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.8);
+      margin-bottom: 2rem;
+    }
+    .about-heading {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 2.5rem;
+    }
+    .about-heading .divider {
+      margin-bottom: 0;
+    }
+    #about .divider {
+      background: var(--gold-matte);
+      opacity: 0.85;
+    }
+    .about-text {
+      width: 100%;
+      padding: 2.75rem 3rem;
+      background: rgba(8, 6, 6, 0.14);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(212, 178, 111, 0.12);
+      box-shadow: none;
+    }
+    #about .about-text p {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #e8d9c0;
+      line-height: 1.85;
+      margin-bottom: 1.75rem;
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.75);
+    }
+    #about .about-text p strong {
+      color: var(--gold-bright);
+      font-weight: 600;
+    }
+    .about-p--short { display: none; }
+    .about-pills { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2.5rem; }
+    .pill {
+      padding: 0.45rem 1.2rem;
+      border: 1px solid var(--border-subtle);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      transition: all 0.3s;
+    }
+    #about .pill {
+      color: var(--gold-bright);
+      font-weight: 500;
+      border-color: rgba(212, 178, 111, 0.28);
+      background: rgba(8, 6, 6, 0.18);
+    }
+    #about .pill:hover {
+      border-color: rgba(243, 224, 190, 0.55);
+      color: #fff;
+      background: rgba(8, 6, 6, 0.28);
+    }
+
+    /* ── TIMELINE ───────────────────────────────────────── */
+    #experience {
+      position: relative;
+      overflow: hidden;
+      margin-top: clamp(-8rem, -14vh, -5rem);
+      padding-top: calc(10rem + clamp(2rem, 6vh, 4rem));
+      border-top: none;
+      background: transparent;
+    }
+    #experience::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 0;
+      background: none;
+      z-index: 0;
+      pointer-events: none;
+    }
+    #experience > * { position: relative; z-index: 1; }
+    .timeline { position: relative; max-width: 900px; }
+    .timeline-item {
+      position: relative; padding-left: 3.5rem; margin-bottom: 4.5rem;
+      opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .timeline-item.visible { opacity: 1; transform: translateY(0); }
+    .timeline-marker {
+      position: absolute; left: 0; top: 0.5rem; width: 8px; height: 8px;
+      border-radius: 50%; background: var(--gold-matte);
+    }
+    .timeline-line {
+      position: absolute; left: 3px; top: 1.5rem; bottom: -4.5rem; width: 1px;
+      background: var(--border-subtle);
+    }
+    .timeline-item:last-child .timeline-line { display: none; }
+    .timeline-period { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dark); margin-bottom: 0.6rem; letter-spacing: 0.1em; }
+    .timeline-role { font-family: var(--font-display); font-size: 1.4rem; font-weight: 400; color: #fff; margin-bottom: 0.25rem; }
+    .timeline-company { font-size: 0.85rem; color: rgba(255, 255, 255, 0.78); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.5rem; font-weight: 500; }
+    .timeline-body { list-style: none; }
+    .timeline-body li { position: relative; padding-left: 1.5rem; color: var(--text-muted); font-size: 0.95rem; line-height: 1.75; margin-bottom: 0.75rem; }
+    .timeline-body li::before { content: '—'; position: absolute; left: 0; color: rgba(255, 255, 255, 0.55); }
+
+    /* ── STRUCTURAL CARDS (PROJECTS) ────────────────────── */
+    #projects { background: rgba(14, 14, 16, 0.72); border-top: 1px solid var(--border-subtle); backdrop-filter: blur(6px); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 2.5rem; }
+    .project-card {
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-dark); border: 1px solid var(--border-subtle);
+      padding: 3rem; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: none; display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .project-card > * {
+      position: relative;
+      z-index: 1;
+    }
+    .project-logo {
+      width: 74px;
+      height: auto;
+      object-fit: contain;
+      margin-bottom: 1rem;
+      filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.35));
+    }
+    a.project-card { text-decoration: none; color: inherit; }
+    .project-card:hover {
+      border-color: var(--border-focus);
+      background: var(--bg-panel-glow);
+      transform: translateY(-5px);
+    }
+    .project-num { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dark); margin-bottom: 1.2rem; letter-spacing: 0.15em; }
+    .project-name { font-family: var(--font-display); font-size: 1.35rem; font-weight: 400; color: #fff; margin-bottom: 0.6rem; }
+    .project-tech { font-family: var(--font-mono); font-size: 0.72rem; color: rgba(255, 255, 255, 0.72); margin-bottom: 1.5rem; letter-spacing: 0.05em; }
+    .project-desc { font-size: 0.92rem; line-height: 1.75; color: var(--text-muted); margin-bottom: 2rem; }
+    .project-metrics { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .metric { font-family: var(--font-mono); font-size: 0.68rem; padding: 0.3rem 0.8rem; border: 1px solid var(--border-subtle); color: var(--text-main); background: rgba(255,255,255,0.01); }
+    .project-url { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dark); margin-top: 1.25rem; letter-spacing: 0.04em; transition: color 0.3s; }
+    a.project-card:hover .project-url { color: #ffffff; }
+    .project-card--nodp::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image: linear-gradient(
+          to bottom,
+          rgba(8, 8, 10, 0.82),
+          rgba(8, 8, 10, 0.56)
+        ),
+        url('nodp-login.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .project-card--nodp:hover::before {
+      opacity: 1;
+    }
+    .project-card--rsu::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image: linear-gradient(
+          to bottom,
+          rgba(8, 8, 10, 0.82),
+          rgba(8, 8, 10, 0.56)
+        ),
+        url('rsu-login.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .project-card--rsu:hover::before {
+      opacity: 1;
+    }
+    .project-card--dipixels::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image: linear-gradient(
+          to bottom,
+          rgba(8, 8, 10, 0.82),
+          rgba(8, 8, 10, 0.56)
+        ),
+        url('dipixels.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .project-card--dipixels:hover::before {
+      opacity: 1;
+    }
+    .nodp-login-hint {
+      margin-top: 0.45rem;
+      font-family: var(--font-mono);
+      font-size: 0.64rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold-bright);
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      pointer-events: none;
+    }
+    a.project-card--nodp:hover .nodp-login-hint {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .project-card--internal { cursor: default; }
+    .project-card--internal:hover { transform: none; }
+    .metric--muted { color: var(--text-dark); border-style: dashed; }
+    .btn-cv {
+      border: 1px solid var(--gold-matte);
+      color: var(--gold-bright);
+      background: rgba(212, 178, 111, 0.08);
+    }
+    .btn-cv:hover {
+      background: rgba(212, 178, 111, 0.18);
+      color: #fff;
+      border-color: var(--gold-bright);
+    }
+
+    /* ── TECH ARSENAL SKILLS ───────────────────────────── */
+    #skills {
+      background: rgba(14, 14, 16, 0.75);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      backdrop-filter: blur(8px);
+    }
+    .skills-intro {
+      max-width: 640px;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+      margin-bottom: 3.5rem;
+    }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.75rem;
+    }
+    .skill-card {
+      position: relative;
+      background: linear-gradient(145deg, rgba(20, 20, 22, 0.95) 0%, rgba(6, 6, 6, 0.85) 100%);
+      border: 1px solid var(--border-subtle);
+      padding: 2.25rem 2rem;
+      transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold-matte), transparent);
+      opacity: 0.55;
+      transition: opacity 0.35s;
+    }
+    .skill-card:hover {
+      border-color: var(--border-focus);
+      transform: translateY(-5px);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+    }
+    .skill-card:hover::before { opacity: 1; }
+    .skill-card-head {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+    .skill-card-num {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      color: var(--gold-matte);
+      flex-shrink: 0;
+    }
+    .skill-group-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin: 0;
+      border: none;
+      padding: 0;
+    }
+    .skill-chip-list { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+    .skill-chip {
+      position: relative;
+      padding: 0.55rem 1.15rem;
+      border: 1px solid rgba(212, 178, 111, 0.18);
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      color: rgba(255, 255, 255, 0.78);
+      background: rgba(6, 6, 6, 0.55);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .skill-chip:hover {
+      border-color: var(--gold-bright);
+      color: #fff;
+      background: rgba(212, 178, 111, 0.08);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+    .skill-chip--primary {
+      border-color: rgba(212, 178, 111, 0.45);
+      color: var(--gold-bright);
+      background: rgba(212, 178, 111, 0.06);
+    }
+    .skill-meter-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      margin-top: 0.25rem;
+    }
+    .skill-meter {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.45rem 1rem;
+      align-items: center;
+    }
+    .skill-meter-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.82);
+      letter-spacing: 0.05em;
+    }
+    .skill-meter-val {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      color: var(--gold-matte);
+      letter-spacing: 0.1em;
+    }
+    .skill-meter-track {
+      grid-column: 1 / -1;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .skill-meter-fill {
+      height: 100%;
+      width: var(--level, 80%);
+      background: linear-gradient(90deg, var(--gold-deep), var(--gold-matte), var(--gold-bright));
+      border-radius: 999px;
+      transform-origin: left;
+      animation: skillMeterGrow 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes skillMeterGrow {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+    .skills-grid .skill-card.reveal:nth-child(1) { transition-delay: 0.05s; }
+    .skills-grid .skill-card.reveal:nth-child(2) { transition-delay: 0.12s; }
+    .skills-grid .skill-card.reveal:nth-child(3) { transition-delay: 0.19s; }
+    .skills-grid .skill-card.reveal:nth-child(4) { transition-delay: 0.26s; }
+
+    /* ── LIVE WORK LINK ARCHITECTURE ────────────────────── */
+    #portfolio { background: rgba(14, 14, 16, 0.72); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); backdrop-filter: blur(6px); }
+    .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 1.5rem; }
+    .portfolio-link-card {
+      position: relative;
+      overflow: hidden;
+      display: flex; flex-direction: column; justify-content: space-between; min-height: 160px;
+      text-decoration: none; padding: 2.2rem; border: 1px solid var(--border-subtle); background: var(--bg-dark);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); cursor: none;
+    }
+    .portfolio-link-card > * {
+      position: relative;
+      z-index: 1;
+    }
+    .portfolio-link-card:hover { border-color: var(--border-focus); transform: translateY(-4px); background: var(--bg-panel-glow); }
+    .portfolio-link-card--nodp::before,
+    .portfolio-link-card--rsu::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .portfolio-link-card--nodp::before {
+      background-image: linear-gradient(
+          to bottom,
+          rgba(8, 8, 10, 0.82),
+          rgba(8, 8, 10, 0.56)
+        ),
+        url('nodp-login.png');
+    }
+    .portfolio-link-card--rsu::before {
+      background-image: linear-gradient(
+          to bottom,
+          rgba(8, 8, 10, 0.82),
+          rgba(8, 8, 10, 0.56)
+        ),
+        url('rsu-login.png');
+    }
+    .portfolio-link-card--nodp:hover::before,
+    .portfolio-link-card--rsu:hover::before {
+      opacity: 1;
+    }
+    .portfolio-link-card--oldpf::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 1;
+      transition: opacity 0.35s ease;
+    }
+    .portfolio-link-card--3d::before {
+      background-image: linear-gradient(to bottom, rgba(8, 8, 10, 0.82), rgba(8, 8, 10, 0.56)), url('oldpf.png');
+    }
+    .portfolio-link-card--webgl::before {
+      background-image: linear-gradient(to bottom, rgba(8, 8, 10, 0.82), rgba(8, 8, 10, 0.56)), url('shoes.png');
+    }
+    .portfolio-link-card--dashboard::before {
+      background-image: linear-gradient(to bottom, rgba(8, 8, 10, 0.82), rgba(8, 8, 10, 0.56)), url('dashboard.png');
+    }
+    .portfolio-link-card--nft::before {
+      background-image: linear-gradient(to bottom, rgba(8, 8, 10, 0.82), rgba(8, 8, 10, 0.56)), url('NFT.png');
+    }
+    .portfolio-link-card--restaurant::before {
+      background-image: linear-gradient(to bottom, rgba(8, 8, 10, 0.82), rgba(8, 8, 10, 0.56)), url('resutrant.png');
+    }
+    .portfolio-link-card .link-icon { font-size: 1.25rem; color: #ffffff; margin-bottom: 1rem; }
+    .portfolio-link-card .link-logo {
+      width: 48px;
+      height: auto;
+      object-fit: contain;
+      margin-bottom: 1rem;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35));
+    }
+    .portfolio-link-card .link-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 400; color: #fff; margin-bottom: 0.5rem; }
+    .portfolio-link-card .link-url { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dark); transition: color 0.3s; }
+    .portfolio-link-card:hover .link-url { color: #ffffff; }
+
+    /* ── CLEAN CONTACT EXPERIENCE ───────────────────────── */
+    #contact {
+      background: linear-gradient(180deg, transparent 0%, rgba(6, 6, 6, 0.62) 35%, rgba(6, 6, 6, 0.78) 100%);
+      text-align: center;
+    }
+    .contact-inner { max-width: 700px; margin: 0 auto; }
+    .contact-inner p { font-size: 1.05rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 3rem; }
+    .contact-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      margin-top: 2.5rem;
+    }
+    .contact-actions .btn-primary,
+    .contact-actions .btn-secondary { cursor: pointer; }
+    .contact-btn--email {
+      font-size: 0.68rem;
+      letter-spacing: 0.05em;
+      text-transform: none;
+      padding: 1rem 1.75rem;
+    }
+
+    /* ── FOOTER ─────────────────────────────────────────── */
+    footer { text-align: center; padding: 3.5rem 4rem; border-top: 1px solid var(--border-subtle); background: var(--bg-panel); font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-dark); letter-spacing: 0.1em; }
+
+    /* ── REVEAL MECHANICS ───────────────────────────────── */
+    .reveal { opacity: 0; transform: translateY(35px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    #typewriter::after { content: '_'; animation: blink 0.9s infinite; color: #d4b483; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* ── BREAKPOINTS ────────────────────────────────────── */
+    @media (max-width: 1200px) {
+      nav, nav.scrolled { padding: 1.5rem 3rem; }
+      section { padding: 8rem 6vw; }
+      #about {
+        padding-top: calc(8rem + clamp(5rem, 14vh, 8rem));
+        padding-bottom: 7rem;
+      }
+      #experience {
+        margin-top: clamp(-7rem, -12vh, -4rem);
+        padding-top: calc(8rem + clamp(2rem, 6vh, 4rem));
+      }
+    }
+
+    @media (max-width: 992px) {
+      nav, nav.scrolled { padding: 1.5rem 2rem; }
+      section { padding: 7rem 5vw; }
+      #about {
+        padding-top: calc(7rem + clamp(4rem, 12vh, 7rem));
+        padding-bottom: 6rem;
+      }
+      #experience {
+        margin-top: clamp(-6rem, -10vh, -3.5rem);
+        padding-top: calc(7rem + clamp(2rem, 5vh, 3.5rem));
+      }
+      .hero-stats { gap: 2.5rem; flex-wrap: wrap; }
+      .skills-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .contact-actions { gap: 1rem; }
+      footer { padding: 3rem 2rem; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: flex; }
+
+      .nav-links {
+        display: flex;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: min(88vw, 320px);
+        height: 100vh;
+        height: 100dvh;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 1.75rem;
+        padding: 5rem 2rem 2rem;
+        background: rgba(14, 14, 16, 0.98);
+        border-left: 1px solid var(--border-subtle);
+        transform: translateX(100%);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 100;
+      }
+      body.nav-open .nav-links { transform: translateX(0); }
+
+      .nav-links a { font-size: 0.8rem; }
+
+      .hero-name { font-size: clamp(2.6rem, 12vw, 4.5rem); }
+      .hero-role { font-size: clamp(1rem, 4vw, 1.35rem); letter-spacing: 0.1em; }
+      .hero-desc { font-size: 0.95rem; max-width: 100%; }
+      .hero-stats {
+        flex-direction: column;
+        gap: 1.5rem;
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid var(--border-subtle);
+        padding-top: 1.5rem;
+      }
+      .hero-ctas { flex-direction: column; width: 100%; }
+      .btn-primary, .btn-secondary {
+        width: 100%;
+        text-align: center;
+        padding: 1rem 1.5rem;
+        cursor: pointer;
+      }
+
+      .scroll-hint { display: none; }
+
+      .section-label { letter-spacing: 0.35em; font-size: 0.65rem; }
+      .section-title { margin-bottom: 2rem; }
+      .about-text { padding: 2rem 1.5rem; }
+      .about-p--full { display: none; }
+      .about-p--short { display: block; }
+
+      .timeline-item { padding-left: 2.5rem; margin-bottom: 3.5rem; }
+      .timeline-role { font-size: 1.2rem; }
+
+      .project-card, .portfolio-link-card { padding: 2rem; cursor: pointer; }
+      .project-card:hover, .portfolio-link-card:hover { transform: none; }
+
+      #cursor-dot, #cursor-ring { display: none; }
+      body { cursor: auto; }
+    }
+
+    @media (max-width: 480px) {
+      nav, nav.scrolled { padding: 1rem 1.25rem; }
+      section { padding: 6rem 1.25rem; min-height: auto; }
+      #about {
+        margin-top: -4.5rem;
+        margin-bottom: -3rem;
+        padding-top: calc(6rem + 4.5rem);
+        padding-bottom: 5rem;
+      }
+      #experience {
+        margin-top: -4rem;
+        padding-top: calc(6rem + 2rem);
+      }
+
+      .nav-logo { font-size: 1.25rem; }
+
+      .hero-eyebrow {
+        font-size: 0.68rem;
+        letter-spacing: 0.18em;
+        flex-wrap: wrap;
+      }
+
+      .hero-name { font-size: clamp(2.2rem, 14vw, 3.2rem); }
+      .stat-val { font-size: 1.85rem; }
+
+      .section-title { font-size: clamp(1.75rem, 8vw, 2.4rem); }
+      .divider { margin-bottom: 2.5rem; }
+
+      .contact-actions {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        gap: 1rem;
+      }
+      .contact-actions .btn-primary,
+      .contact-actions .btn-secondary {
+        width: 100%;
+        text-align: center;
+      }
+
+      footer { padding: 2.5rem 1.25rem; font-size: 0.62rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .about-bg-slide {
+        animation: none !important;
+        opacity: 0 !important;
+      }
+      .about-bg-slide--19 { opacity: 1 !important; }
+      .reveal,
+      .timeline-item {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      #typewriter::after { animation: none; }
+    }
+
+  </style>
+</head>
+<body>
+
+<canvas class="webgl" id="webgl"></canvas>
+<canvas id="butterfly-canvas" class="hero-butterfly-canvas" aria-hidden="true"></canvas>
+<div class="bg-veil" aria-hidden="true"></div>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">NQ</a>
+  <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#portfolio">Work</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow">Available for Frontend &amp; Full-Stack Roles</div>
+    <h1 class="hero-name">
+      <span class="name-first">Nimrah</span><br/><span class="name-gold">Qureshi</span>
+    </h1>
+    <p class="hero-headline">Full-Stack JavaScript Developer</p>
+    <p class="hero-stack">React • Next.js • Node.js • TypeScript</p>
+    <p class="hero-desc">
+      I build high-performance web applications and national-scale education platforms — from polished React/Next.js interfaces to resilient APIs — serving <strong>100,000+ daily users</strong> in production.
+    </p>
+    
+    <div class="hero-stats">
+      <div>
+        <div class="stat-val">3+</div>
+        <div class="stat-lbl">Years Exp.</div>
+      </div>
+      <div>
+        <div class="stat-val">100K+</div>
+        <div class="stat-lbl">Daily Users</div>
+      </div>
+      <div>
+        <div class="stat-val">300K+</div>
+        <div class="stat-lbl">Data Records</div>
+      </div>
+    </div>
+
+    <div class="hero-ctas">
+      <a href="#projects" class="btn-primary">Explore Workspace</a>
+      <a href="Nimrah_Qureshi.pdf" class="btn-secondary btn-cv" download>Download CV</a>
+      <a href="#contact" class="btn-secondary">Initiate Contact</a>
+    </div>
+  </div>
+  <div class="scroll-hint"><span></span>Overview</div>
+</section>
+
+<section id="about">
+  <div class="about-bg-slides" aria-hidden="true">
+    <div class="about-bg-slide about-bg-slide--19"></div>
+    <div class="about-bg-slide about-bg-slide--20"></div>
+    <div class="about-bg-slide about-bg-slide--23"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-heading reveal">
+      <div class="section-label">Executive Brief</div>
+      <h2 class="section-title">High Fidelity UI,<br/>Robust Engineering.</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="about-text reveal">
+      <p class="about-p--full">I am a Frontend Developer focused on architectural cleanliness and visual perfection. Specializing in ecosystem design across React, Next.js, Angular, and Vue.js, I bridge production requirements with seamless end-user interactions.</p>
+      <p class="about-p--short">Frontend developer crafting clean React &amp; Next.js systems for enterprise-scale platforms — from national education portals to real-time analytics dashboards.</p>
+      <p>Currently executing technical workflows for <strong>PIE &amp; NODP</strong> within Sapphire Consulting Services, handling distributed operations for over 300,000 nationwide academic frameworks.</p>
+      <p class="about-p--full">Alumna of Federal Urdu University with a Bachelor’s in Computer Science (CGPA 3.5), operating dynamically at the intersection of clean computational logic and sophisticated aesthetics.</p>
+      
+      <div class="about-pills">
+        <span class="pill">React.js</span>
+        <span class="pill">Next.js</span>
+        <span class="pill">Angular</span>
+        <span class="pill">Vue.js</span>
+        <span class="pill">Redux Toolkit</span>
+        <span class="pill">Spring Boot APIs</span>
+        <span class="pill">Jest Engine</span>
+        <span class="pill">Figma Studio</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-label reveal">Chronology</div>
+  <h2 class="section-title reveal">Professional Trajectory</h2>
+  <div class="divider reveal"></div>
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-marker"></div>
+      <div class="timeline-line"></div>
+      <div class="timeline-period">Nov 2024 — Present</div>
+      <div class="timeline-role">Full-Stack Developer</div>
+      <div class="timeline-company">Sapphire Consulting Services</div>
+      <ul class="timeline-body">
+        <li>Developing high-throughput modules for PIE &amp; NODP national architectures, managing systematic information clusters for 300K+ environments.</li>
+        <li>Built modules for RSU Sindh (Reform Support Unit), supporting school monitoring, education analytics, and sector reform operations.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-marker"></div>
+      <div class="timeline-line"></div>
+      <div class="timeline-period">Mar 2023 — Oct 2024</div>
+      <div class="timeline-role">Frontend Developer</div>
+      <div class="timeline-company">Dipixels</div>
+      <ul class="timeline-body">
+        <li>Engineered reusable component layout strategies, driving an active 25% elevation in overall interactive engagement.</li>
+        <li>Optimized communication hooks over REST infrastructures, shrinking operational application loading weight by 30%.</li>
+        <li>Constructed globalized application states using Redux and Context API structures to scale complex data operations safely.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-marker"></div>
+      <div class="timeline-line"></div>
+      <div class="timeline-period">Aug 2023 — Dec 2023</div>
+      <div class="timeline-role">Web Developer Intern</div>
+      <div class="timeline-company">Stratesfy Inc</div>
+      <ul class="timeline-body">
+        <li>Maintained large-format digital assets for corporate portals, executing UI refinements using declarative Webflow strategies.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-label reveal">Case Studies</div>
+  <h2 class="section-title reveal">Selected Deployments</h2>
+  <div class="divider reveal"></div>
+  <div class="projects-grid">
+
+    <a href="https://nodp.gov.pk/" target="_blank" rel="noopener noreferrer" class="project-card project-card--nodp reveal">
+      <div>
+        <img src="image.png" alt="NODP logo" class="project-logo"/>
+        <div class="project-num">01 / GOVERNMENT DATA PORTAL</div>
+        <div class="project-name">NODP — National Open Data Portal</div>
+        <div class="project-tech">MERN Stack · Microservices · PostgreSQL</div>
+        <div class="project-desc">A government data portal engineered for secure, high-volume public-sector workflows with modular microservices and resilient role-based access controls.</div>
+      </div>
+      <div>
+        <div class="project-metrics">
+          <span class="metric">300K+ Profiles</span>
+          <span class="metric">High Availability</span>
+        </div>
+        <div class="project-url">nodp.gov.pk</div>
+        <div class="nodp-login-hint">nodp-login</div>
+      </div>
+    </a>
+
+    <a href="https://rsusindh.gov.pk/" target="_blank" rel="noopener noreferrer" class="project-card project-card--rsu reveal">
+      <div>
+        <img src="rsu-logo.png" alt="RSU logo" class="project-logo"/>
+        <div class="project-num">02 / GOVERNMENT EDUCATION MANAGEMENT PORTAL</div>
+        <div class="project-name">RSU Sindh — Reform Support Unit</div>
+        <div class="project-tech">SEMIS · School Census · Stipend Records · Monitoring Dashboards</div>
+        <div class="project-desc">A government education management portal supporting policy implementation, school monitoring, analytics, geotagging, and public education services across Sindh.</div>
+      </div>
+      <div>
+        <div class="project-metrics">
+          <span class="metric">Sindh-wide Services</span>
+          <span class="metric">Reform Programs</span>
+        </div>
+        <div class="project-url">rsusindh.gov.pk</div>
+      </div>
+    </a>
+
+    <div class="project-card project-card--internal project-card--dipixels reveal">
+      <div>
+        <div class="project-num">03 / SOFTWARE DEVELOPMENT AGENCY</div>
+        <div class="project-name">Dipixels — IT Services &amp; Digital Agency</div>
+        <div class="project-tech">React · Angular · Laravel · WordPress · Shopify · Figma</div>
+        <div class="project-desc">IT services and consulting agency delivering custom software development, UI/UX design, branding, web/mobile development, e-commerce, and digital marketing solutions.</div>
+      </div>
+      <div class="project-metrics">
+        <span class="metric">IT Services &amp; Consulting</span>
+        <span class="metric">Custom Development</span>
+        <span class="metric">UI/UX &amp; Branding</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="skills">
+  <div class="section-label reveal">Capabilities</div>
+  <h2 class="section-title reveal">Technical Specializations</h2>
+  <div class="divider reveal"></div>
+  <p class="skills-intro reveal">Full-stack frontend capability from web fundamentals through modern frameworks, design tooling, collaboration platforms, and relational &amp; document databases.</p>
+  <div class="skills-grid">
+    <article class="skill-card reveal">
+      <div class="skill-card-head">
+        <span class="skill-card-num">01</span>
+        <h3 class="skill-group-title">Basics</h3>
+      </div>
+      <div class="skill-chip-list">
+        <span class="skill-chip skill-chip--primary">HTML</span>
+        <span class="skill-chip skill-chip--primary">CSS</span>
+        <span class="skill-chip skill-chip--primary">JavaScript</span>
+      </div>
+    </article>
+    <article class="skill-card reveal">
+      <div class="skill-card-head">
+        <span class="skill-card-num">02</span>
+        <h3 class="skill-group-title">Frameworks</h3>
+      </div>
+      <div class="skill-chip-list">
+        <span class="skill-chip skill-chip--primary">React.js</span>
+        <span class="skill-chip skill-chip--primary">Next.js</span>
+        <span class="skill-chip">Vue.js</span>
+        <span class="skill-chip">Angular</span>
+        <span class="skill-chip">Tailwind</span>
+        <span class="skill-chip">MUI</span>
+        <span class="skill-chip">Bootstrap</span>
+        <span class="skill-chip">GSAP</span>
+        <span class="skill-chip">jQuery</span>
+      </div>
+    </article>
+    <article class="skill-card reveal">
+      <div class="skill-card-head">
+        <span class="skill-card-num">03</span>
+        <h3 class="skill-group-title">Tools</h3>
+      </div>
+      <div class="skill-chip-list">
+        <span class="skill-chip skill-chip--primary">Redux Toolkit</span>
+        <span class="skill-chip">WordPress</span>
+        <span class="skill-chip">Figma</span>
+        <span class="skill-chip">Canva</span>
+        <span class="skill-chip">Jira</span>
+        <span class="skill-chip">Trello</span>
+        <span class="skill-chip">Notion</span>
+        <span class="skill-chip">Google Workspace</span>
+        <span class="skill-chip">Microsoft Office</span>
+        <span class="skill-chip">Git / GitHub</span>
+      </div>
+    </article>
+    <article class="skill-card reveal">
+      <div class="skill-card-head">
+        <span class="skill-card-num">04</span>
+        <h3 class="skill-group-title">Database</h3>
+      </div>
+      <div class="skill-chip-list">
+        <span class="skill-chip">MySQL</span>
+        <span class="skill-chip">MongoDB</span>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="portfolio">
+  <div class="section-label reveal">Verifiable Source</div>
+  <h2 class="section-title reveal">Active Digital Deployments</h2>
+  <div class="divider reveal"></div>
+  <div class="portfolio-grid">
+    <a href="https://nimrahportfolio.netlify.app/" target="_blank" class="portfolio-link-card portfolio-link-card--oldpf portfolio-link-card--3d reveal">
+      <div class="link-icon">⚡</div>
+      <div>
+        <div class="link-title">3D Experiential Workspace</div>
+        <div class="link-url">nimrahportfolio.netlify.app</div>
+      </div>
+    </a>
+    <a href="https://symphonious-stroopwafel-171fad.netlify.app/" target="_blank" class="portfolio-link-card portfolio-link-card--oldpf portfolio-link-card--webgl reveal">
+      <div class="link-icon">⚙️</div>
+      <div>
+        <div class="link-title">WebGL Showcase</div>
+        <div class="link-url">symphonious-stroopwafel-171fad.netlify.app</div>
+      </div>
+    </a>
+    <a href="https://644a80590b7aea005788fbfa--celadon-peony-96cee2.netlify.app/" target="_blank" rel="noopener noreferrer" class="portfolio-link-card portfolio-link-card--oldpf portfolio-link-card--dashboard reveal">
+      <div class="link-icon">📈</div>
+      <div>
+        <div class="link-title">Dashboard Showcase</div>
+        <div class="link-url">celadon-peony-96cee2.netlify.app</div>
+      </div>
+    </a>
+    <a href="https://nimrahq.github.io/NFT2/" target="_blank" rel="noopener noreferrer" class="portfolio-link-card portfolio-link-card--oldpf portfolio-link-card--nft reveal">
+      <div class="link-icon">💎</div>
+      <div>
+        <div class="link-title">NFT Showcase</div>
+        <div class="link-url">HTML &amp; CSS · nimrahq.github.io/NFT2</div>
+      </div>
+    </a>
+    <a href="https://nimrahq.github.io/restaurent" target="_blank" rel="noopener noreferrer" class="portfolio-link-card portfolio-link-card--oldpf portfolio-link-card--restaurant reveal">
+      <div class="link-icon">🍽️</div>
+      <div>
+        <div class="link-title">Restaurant Showcase</div>
+        <div class="link-url">React &amp; Tailwind CSS · nimrahq.github.io/restaurent</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-inner">
+    <div class="section-label reveal">Collaboration</div>
+    <h2 class="section-title reveal">Let's Build Together</h2>
+    <div class="divider reveal" style="margin: 0 auto 2.5rem;"></div>
+    <p class="reveal">
+      Currently taking requests for high-performance integrations, frontend consulting architecture installations, and enterprise systems engineering.
+    </p>
+    <div class="contact-actions reveal">
+      <a href="Nimrah_Qureshi.pdf" class="btn-secondary btn-cv contact-btn" download>Download CV</a>
+      <a href="mailto:nimra.naeem1121@gmail.com" class="btn-secondary contact-btn contact-btn--email">nimra.naeem1121@gmail.com</a>
+      <a href="tel:+923012484514" class="btn-secondary contact-btn">03012484514</a>
+      <a href="https://www.linkedin.com/in/nimrah-qureshi/" target="_blank" rel="noopener noreferrer" class="btn-primary contact-btn">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Nimrah Qureshi &copy; 2026 &middot; System Node Secured
+</footer>
+
+<script>
+/* ── ULTRA SMOOTH INERTIAL CURSOR ─────────────────────── */
+const dot  = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function moveCursor() {
+  dot.style.left  = mx + 'px'; dot.style.top   = my + 'px';
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px'; ring.style.top  = ry + 'px';
+  requestAnimationFrame(moveCursor);
+}
+moveCursor();
+
+/* ── NAV EVENT SCRIPTS ─────────────────────────────────── */
+const nav = document.getElementById('navbar');
+const navToggle = document.querySelector('.nav-toggle');
+const navLinks = document.querySelector('.nav-links');
+
+navToggle?.addEventListener('click', () => {
+  const open = document.body.classList.toggle('nav-open');
+  navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
+
+navLinks?.querySelectorAll('a').forEach((link) => {
+  link.addEventListener('click', () => {
+    document.body.classList.remove('nav-open');
+    navToggle?.setAttribute('aria-expanded', 'false');
+  });
+});
+
+function getActiveSectionId() {
+  const viewportMid = window.innerHeight * 0.5;
+  let activeId = 'hero';
+  let bestDistance = Infinity;
+
+  document.querySelectorAll('section').forEach((section) => {
+    const rect = section.getBoundingClientRect();
+    if (rect.bottom <= 0 || rect.top >= window.innerHeight) return;
+
+    const sectionMid = rect.top + rect.height * 0.5;
+    const distance = Math.abs(sectionMid - viewportMid);
+    if (distance < bestDistance) {
+      bestDistance = distance;
+      activeId = section.id || 'hero';
+    }
+  });
+
+  return activeId;
+}
+
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let pageVisible = !document.hidden;
+document.addEventListener('visibilitychange', () => {
+  pageVisible = !document.hidden;
+});
+
+function isMobileViewport() {
+  return window.innerWidth <= 768;
+}
+
+function updateActiveNav() {
+  const activeId = getActiveSectionId();
+  navLinks?.querySelectorAll('a').forEach((link) => {
+    link.classList.toggle('active', link.getAttribute('href') === `#${activeId}`);
+  });
+}
+
+function updateAboutBgParallax() {
+  if (prefersReducedMotion) return;
+  const about = document.getElementById('about');
+  if (!about) return;
+  const rect = about.getBoundingClientRect();
+  if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+  const shift = Math.min(6, Math.max(-6, (rect.top / window.innerHeight) * 8));
+  document.querySelectorAll('.about-bg-slide').forEach((slide) => {
+    slide.style.backgroundPosition = `center calc(50% + ${shift}%)`;
+  });
+}
+
+updateActiveNav();
+updateAboutBgParallax();
+
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+  updateActiveNav();
+  updateAboutBgParallax();
+}, { passive: true });
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768) {
+    document.body.classList.remove('nav-open');
+    navToggle?.setAttribute('aria-expanded', 'false');
+  }
+});
+
+/* ── VISIBILITY SCROLL REVEALS ─────────────────────────── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting) {
+      en.target.classList.add('visible');
+      observer.unobserve(en.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal, .timeline-item').forEach(el => observer.observe(el));
+
+
+/* ── PINK BALLS + SCROLL PARTICLE DISSOLVE ─────────────── */
+const PARTICLES_PER_BALL = 10;
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 24;
+
+const renderer = new THREE.WebGLRenderer({
+  canvas: document.querySelector('#webgl'),
+  antialias: true,
+  alpha: true
+});
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+const radii = [
+  1, 0.6, 0.8, 0.4, 0.9, 0.7, 0.9, 0.3, 0.2, 0.5, 0.6, 0.4, 0.5, 0.6, 0.7, 0.3, 0.4, 0.8, 0.7, 0.5, 0.4, 0.6, 0.35, 0.38, 0.9,
+  0.3, 0.6, 0.4, 0.2, 0.35, 0.5, 0.15, 0.2, 0.25, 0.4, 0.8, 0.76, 0.8, 1, 0.8, 0.7, 0.8, 0.3, 0.5, 0.6, 0.55, 0.42, 0.75, 0.66, 0.6,
+  0.7, 0.5, 0.6, 0.35, 0.35, 0.35, 0.8, 0.6, 0.7, 0.8, 0.4, 0.89, 0.3,
+  0.3, 0.6, 0.4, 0.2, 0.52, 0.5, 0.15, 0.2, 0.25, 0.4, 0.8, 0.76, 0.8, 1, 0.8, 0.7, 0.8, 0.3, 0.5, 0.6, 0.8, 0.7, 0.75, 0.66, 0.6,
+  0.7, 0.5, 0.6, 0.35, 0.35, 0.35, 0.8, 0.6, 0.7, 0.8, 0.4, 0.89, 0.3
+];
+
+const ballPositions = [
+  { x: 0, y: 0, z: 0 }, { x: 1.2, y: 0.9, z: -0.5 }, { x: 1.8, y: -0.3, z: 0 }, { x: -1, y: -1, z: 0 }, { x: -1, y: 1.62, z: 0 },
+  { x: -1.65, y: 0, z: -0.4 }, { x: -2.13, y: -1.54, z: -0.4 }, { x: 0.8, y: 0.94, z: 0.3 }, { x: 0.5, y: -1, z: 1.2 }, { x: -0.16, y: -1.2, z: 0.9 },
+  { x: 1.5, y: 1.2, z: 0.8 }, { x: 0.5, y: -1.58, z: 1.4 }, { x: -1.5, y: 1, z: 1.15 }, { x: -1.5, y: -1.5, z: 0.99 }, { x: -1.5, y: -1.5, z: -1.9 },
+  { x: 1.85, y: 0.8, z: 0.05 }, { x: 1.5, y: -1.2, z: -0.75 }, { x: 0.9, y: -1.62, z: 0.22 }, { x: 0.45, y: 2, z: 0.65 }, { x: 2.5, y: 1.22, z: -0.2 },
+  { x: 2.35, y: 0.7, z: 0.55 }, { x: -1.8, y: -0.35, z: 0.85 }, { x: -1.02, y: 0.2, z: 0.9 }, { x: 0.2, y: 1, z: 1 }, { x: -2.88, y: 0.7, z: 1 },
+  { x: -2, y: -0.95, z: 1.5 }, { x: -2.3, y: 2.4, z: -0.1 }, { x: -2.5, y: 1.9, z: 1.2 }, { x: -1.8, y: 0.37, z: 1.2 }, { x: -2.4, y: 1.42, z: 0.05 },
+  { x: -2.72, y: -0.9, z: 1.1 }, { x: -1.8, y: -1.34, z: 1.67 }, { x: -1.6, y: 1.66, z: 0.91 }, { x: -2.8, y: 1.58, z: 1.69 }, { x: -2.97, y: 2.3, z: 0.65 },
+  { x: 1.1, y: -0.2, z: -1.45 }, { x: -4, y: 1.78, z: 0.38 }, { x: 0.12, y: 1.4, z: -1.29 }, { x: -1.64, y: 1.4, z: -1.79 }, { x: -3.5, y: -0.58, z: 0.1 },
+  { x: -0.1, y: -1, z: -2 }, { x: -4.5, y: 0.55, z: -0.5 }, { x: -3.87, y: 0, z: 1 }, { x: -4.6, y: -0.1, z: 0.65 }, { x: -3, y: 1.5, z: -0.7 },
+  { x: -0.5, y: 0.2, z: -1.5 }, { x: -1.3, y: -0.45, z: -1.5 }, { x: -3.35, y: 0.25, z: -1.5 }, { x: -4.76, y: -1.26, z: 0.4 }, { x: -4.32, y: 0.85, z: 1.4 },
+  { x: -3.5, y: -1.82, z: 0.9 }, { x: -3.6, y: -0.6, z: 1.46 }, { x: -4.55, y: -1.5, z: 1.63 }, { x: -3.8, y: -1.15, z: 2.1 }, { x: -2.9, y: -0.25, z: 1.86 },
+  { x: -2.2, y: -0.4, z: 1.86 }, { x: -5.1, y: -0.24, z: 1.86 }, { x: -5.27, y: 1.24, z: 0.76 }, { x: -5.27, y: 2, z: -0.4 }, { x: -6.4, y: 0.4, z: 1 },
+  { x: -5.15, y: 0.95, z: 2 }, { x: -6.2, y: 0.5, z: -0.8 }, { x: -4, y: 0.08, z: 1.8 },
+  { x: 2, y: -0.95, z: 1.5 }, { x: 2.3, y: 2.4, z: -0.1 }, { x: 2.5, y: 1.9, z: 1.2 }, { x: 1.8, y: 0.37, z: 1.2 }, { x: 3.24, y: 0.6, z: 1.05 },
+  { x: 2.72, y: -0.9, z: 1.1 }, { x: 1.8, y: -1.34, z: 1.67 }, { x: 1.6, y: 1.99, z: 0.91 }, { x: 2.8, y: 1.58, z: 1.69 }, { x: 2.97, y: 2.3, z: 0.65 },
+  { x: -1.3, y: -0.2, z: -2.5 }, { x: 4, y: 1.78, z: 0.38 }, { x: 1.72, y: 1.4, z: -1.29 }, { x: 2.5, y: -1.2, z: -2 }, { x: 3.5, y: -0.58, z: 0.1 },
+  { x: 0.1, y: 0.4, z: -2.42 }, { x: 4.5, y: 0.55, z: -0.5 }, { x: 3.87, y: 0, z: 1 }, { x: 4.6, y: -0.1, z: 0.65 }, { x: 3, y: 1.5, z: -0.7 },
+  { x: 2.3, y: 0.6, z: -2.6 }, { x: 4, y: 1.5, z: -1.6 }, { x: 3.35, y: 0.25, z: -1.5 }, { x: 4.76, y: -1.26, z: 0.4 }, { x: 4.32, y: 0.85, z: 1.4 },
+  { x: 3.5, y: -1.82, z: 0.9 }, { x: 3.6, y: -0.6, z: 1.46 }, { x: 4.55, y: -1.5, z: 1.63 }, { x: 3.8, y: -1.15, z: 2.1 }, { x: 2.9, y: -0.25, z: 1.86 },
+  { x: 2.2, y: -0.4, z: 1.86 }, { x: 5.1, y: -0.24, z: 1.86 }, { x: 5.27, y: 1.24, z: 0.76 }, { x: 5.27, y: 2, z: -0.4 }, { x: 6.4, y: 0.4, z: 1 },
+  { x: 5.15, y: 0.95, z: 2 }, { x: 6.2, y: 0.5, z: -0.8 }, { x: 4, y: 0.08, z: 1.8 }
+];
+
+const pinkColorCycle = [
+  new THREE.Color(0xffd1dc), new THREE.Color(0xfbcfe8), new THREE.Color(0xf9a8d4),
+  new THREE.Color(0xfda4af), new THREE.Color(0xf472b6), new THREE.Color(0xec4899),
+  new THREE.Color(0xdb2777), new THREE.Color(0xbe185d), new THREE.Color(0x9d174d), new THREE.Color(0x831843)
+];
+const tempCycleColor = new THREE.Color();
+const tempCycleEmissive = new THREE.Color();
+const innerGlowColor = new THREE.Color(0xffd65a);
+const colorCycleSpeed = 0.0009;
+
+function createBallMaterial() {
+  return new THREE.MeshStandardMaterial({
+    color: pinkColorCycle[0].clone(),
+    emissive: pinkColorCycle[3].clone().multiplyScalar(0.35),
+    emissiveIntensity: 0.1,
+    metalness: 0.06,
+    roughness: 0.88,
+    transparent: true,
+    opacity: 1
+  });
+}
+
+const ballGroup = new THREE.Group();
+const spheres = [];
+
+ballPositions.forEach((pos, index) => {
+  const radius = radii[index] || 0.5;
+  const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius, 24, 24), createBallMaterial());
+  sphere.position.set(pos.x, pos.y, pos.z);
+  sphere.userData = {
+    originalPosition: { ...pos },
+    radius,
+    pushX: 0,
+    pushY: 0,
+    clickPulse: 0
+  };
+
+  const innerCore = new THREE.Mesh(
+    new THREE.SphereGeometry(radius * 0.45, 12, 12),
+    new THREE.MeshBasicMaterial({ color: 0xffd65a, transparent: true, opacity: 0.22, depthWrite: false })
+  );
+  sphere.add(innerCore);
+  sphere.userData.innerCore = innerCore;
+  spheres.push(sphere);
+  ballGroup.add(sphere);
+});
+
+const BALL_COUNT = spheres.length;
+const PARTICLE_COUNT = BALL_COUNT * PARTICLES_PER_BALL;
+const particleGeometry = new THREE.BufferGeometry();
+const particlePositions = new Float32Array(PARTICLE_COUNT * 3);
+const particleColors = new Float32Array(PARTICLE_COUNT * 3);
+const particleSizes = new Float32Array(PARTICLE_COUNT);
+const particleLocalOffset = new Float32Array(PARTICLE_COUNT * 3);
+const particleSpreadTarget = new Float32Array(PARTICLE_COUNT * 3);
+const particleBurstDir = new Float32Array(PARTICLE_COUNT * 3);
+const particleBurstPower = new Float32Array(PARTICLE_COUNT);
+const particleBallIndex = new Uint16Array(PARTICLE_COUNT);
+
+const neonPalette = [
+  [1.0, 0.12, 0.72],
+  [1.0, 0.35, 0.92],
+  [0.95, 0.1, 1.0],
+  [0.45, 0.95, 1.0],
+  [1.0, 0.55, 0.85]
+];
+
+function setNeonParticleColor(i3, t, intensity = 1) {
+  const idx = Math.floor(t * (neonPalette.length - 1));
+  const next = Math.min(idx + 1, neonPalette.length - 1);
+  const frac = t * (neonPalette.length - 1) - idx;
+  const a = neonPalette[idx];
+  const b = neonPalette[next];
+  const boost = 0.85 + intensity * 0.35;
+  particleColors[i3]     = (a[0] + (b[0] - a[0]) * frac) * boost;
+  particleColors[i3 + 1] = (a[1] + (b[1] - a[1]) * frac) * boost;
+  particleColors[i3 + 2] = (a[2] + (b[2] - a[2]) * frac) * boost;
+}
+
+for (let i = 0; i < PARTICLE_COUNT; i++) {
+  particleSizes[i] = Math.random() * 0.55 + 0.2;
+  setNeonParticleColor(i * 3, Math.random());
+}
+
+particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+particleGeometry.setAttribute('color', new THREE.BufferAttribute(particleColors, 3));
+particleGeometry.setAttribute('size', new THREE.BufferAttribute(particleSizes, 1));
+
+const particleUniforms = { uTime: { value: 0 } };
+
+const particleMaterial = new THREE.ShaderMaterial({
+  uniforms: particleUniforms,
+  vertexColors: true,
+  transparent: true,
+  depthWrite: false,
+  blending: THREE.AdditiveBlending,
+  vertexShader: `
+    attribute float size;
+    varying vec3 vColor;
+    void main() {
+      vColor = color;
+      vec4 mvp = modelViewMatrix * vec4(position, 1.0);
+      gl_PointSize = size * (220.0 / -mvp.z);
+      gl_Position = projectionMatrix * mvp;
+    }
+  `,
+  fragmentShader: `
+    uniform float uTime;
+    varying vec3 vColor;
+    void main() {
+      vec2 uv = gl_PointCoord - vec2(0.5);
+      float d = length(uv);
+      if (d > 0.5) discard;
+      float core = pow(smoothstep(0.5, 0.0, d), 1.35);
+      float ring = smoothstep(0.5, 0.18, d) * smoothstep(0.04, 0.2, d);
+      float twinkle = 0.72 + 0.28 * sin(uTime * 9.0 + d * 16.0);
+      vec3 neon = vColor * (1.4 + core * 1.15) * twinkle;
+      neon += vec3(0.4, 0.18, 0.55) * ring;
+      float alpha = clamp(core + ring * 0.6, 0.0, 1.0);
+      gl_FragColor = vec4(neon, alpha);
+    }
+  `
+});
+
+const particles = new THREE.Points(particleGeometry, particleMaterial);
+particles.visible = false;
+scene.add(ballGroup);
+scene.add(particles);
+
+const ambientLight = new THREE.AmbientLight(0xfff0f5, 0.58);
+scene.add(ambientLight);
+const spotLight = new THREE.SpotLight(0xffe4f0, 0.38);
+spotLight.position.set(14, 24, 30);
+scene.add(spotLight);
+const directionalLight1 = new THREE.DirectionalLight(0xf472b6, 0.28);
+directionalLight1.position.set(0, -4, 0);
+scene.add(directionalLight1);
+const directionalLight2 = new THREE.DirectionalLight(0xf9a8d4, 0.24);
+directionalLight2.position.set(6, 8, 4);
+scene.add(directionalLight2);
+
+const butterflyScene = new THREE.Scene();
+const butterflyCamera = new THREE.PerspectiveCamera(38, 1, 0.1, 50);
+butterflyCamera.position.set(0, 0, 5);
+
+const butterflyRenderer = new THREE.WebGLRenderer({
+  canvas: document.querySelector('#butterfly-canvas'),
+  antialias: true,
+  alpha: true
+});
+butterflyRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+butterflyRenderer.setClearColor(0x000000, 0);
+resizeButterflyStage();
+
+butterflyScene.add(new THREE.AmbientLight(0xfff5ee, 0.95));
+const butterflyLight = new THREE.PointLight(0xfff0e8, 1.1, 12);
+butterflyScene.add(butterflyLight);
+const butterflyDirLight = new THREE.DirectionalLight(0xffffff, 0.45);
+butterflyDirLight.position.set(2, 3, 4);
+butterflyScene.add(butterflyDirLight);
+
+butterflyScene.add(butterflyDirLight);
+
+const BUTTERFLY_DUST_COUNT = 110;
+const butterflyDustData = [];
+const butterflyDustPositions = new Float32Array(BUTTERFLY_DUST_COUNT * 3);
+const butterflyDustColors = new Float32Array(BUTTERFLY_DUST_COUNT * 3);
+const butterflyDustSizes = new Float32Array(BUTTERFLY_DUST_COUNT);
+const butterflyDustAlphas = new Float32Array(BUTTERFLY_DUST_COUNT);
+const butterflyWingLocal = new THREE.Vector3();
+const butterflyWingWorld = new THREE.Vector3();
+const butterflyWingOffsets = [
+  [-0.40, 0.05, 0.02],
+  [0.40, 0.05, 0.02],
+  [-0.30, 0.12, 0.04],
+  [0.30, 0.12, 0.04],
+  [-0.22, 0.08, -0.02],
+  [0.22, 0.08, -0.02]
+];
+
+for (let i = 0; i < BUTTERFLY_DUST_COUNT; i++) {
+  butterflyDustData.push({
+    life: 0,
+    maxLife: 1,
+    x: 0,
+    y: 0,
+    z: 0,
+    vx: 0,
+    vy: 0,
+    vz: 0,
+    spin: Math.random() * Math.PI * 2,
+    hue: Math.random()
+  });
+}
+
+const butterflyDustGeometry = new THREE.BufferGeometry();
+butterflyDustGeometry.setAttribute('position', new THREE.BufferAttribute(butterflyDustPositions, 3));
+butterflyDustGeometry.setAttribute('color', new THREE.BufferAttribute(butterflyDustColors, 3));
+butterflyDustGeometry.setAttribute('size', new THREE.BufferAttribute(butterflyDustSizes, 1));
+butterflyDustGeometry.setAttribute('alpha', new THREE.BufferAttribute(butterflyDustAlphas, 1));
+
+const butterflyDustUniforms = { uTime: { value: 0 } };
+const butterflyDustMaterial = new THREE.ShaderMaterial({
+  uniforms: butterflyDustUniforms,
+  vertexColors: true,
+  transparent: true,
+  depthWrite: false,
+  blending: THREE.AdditiveBlending,
+  vertexShader: `
+    attribute float size;
+    attribute float alpha;
+    varying vec3 vColor;
+    varying float vAlpha;
+    void main() {
+      vColor = color;
+      vAlpha = alpha;
+      vec4 mvp = modelViewMatrix * vec4(position, 1.0);
+      gl_PointSize = size * (200.0 / -mvp.z);
+      gl_Position = projectionMatrix * mvp;
+    }
+  `,
+  fragmentShader: `
+    uniform float uTime;
+    varying vec3 vColor;
+    varying float vAlpha;
+    void main() {
+      vec2 uv = gl_PointCoord - vec2(0.5);
+      float d = length(uv);
+      if (d > 0.5) discard;
+      float core = pow(smoothstep(0.5, 0.0, d), 1.6);
+      float sparkle = smoothstep(0.5, 0.12, d) * smoothstep(0.02, 0.18, d);
+      float twinkle = 0.68 + 0.32 * sin(uTime * 11.0 + d * 22.0);
+      vec3 gold = vColor * (1.25 + core * 1.35) * twinkle;
+      gold += vec3(1.0, 0.92, 0.62) * sparkle * 0.85;
+      float alpha = clamp((core + sparkle * 0.55) * vAlpha, 0.0, 1.0);
+      gl_FragColor = vec4(gold, alpha);
+    }
+  `
+});
+
+const butterflyDust = new THREE.Points(butterflyDustGeometry, butterflyDustMaterial);
+butterflyScene.add(butterflyDust);
+
+function setButterflyDustColor(i3, hue) {
+  const matte = [0.83, 0.70, 0.44];
+  const bright = [0.96, 0.88, 0.68];
+  const white = [1.0, 0.97, 0.82];
+  const t = hue;
+  const a = t < 0.5 ? matte : bright;
+  const b = t < 0.5 ? bright : white;
+  const mix = t < 0.5 ? t * 2 : (t - 0.5) * 2;
+  butterflyDustColors[i3]     = a[0] + (b[0] - a[0]) * mix;
+  butterflyDustColors[i3 + 1] = a[1] + (b[1] - a[1]) * mix;
+  butterflyDustColors[i3 + 2] = a[2] + (b[2] - a[2]) * mix;
+}
+
+function spawnButterflyDustParticle() {
+  if (!butterflyWrap) return;
+  const slot = butterflyDustData.find((p) => p.life <= 0);
+  if (!slot) return;
+
+  butterflyWrap.updateMatrixWorld();
+  const wing = butterflyWingOffsets[Math.floor(Math.random() * butterflyWingOffsets.length)];
+  butterflyWingLocal.set(wing[0], wing[1], wing[2]);
+  butterflyWrap.localToWorld(butterflyWingLocal);
+  butterflyWingWorld.copy(butterflyWingLocal);
+
+  slot.x = butterflyWingWorld.x + (Math.random() - 0.5) * 0.04;
+  slot.y = butterflyWingWorld.y + (Math.random() - 0.5) * 0.04;
+  slot.z = butterflyWingWorld.z + (Math.random() - 0.5) * 0.03;
+  slot.maxLife = 0.55 + Math.random() * 0.75;
+  slot.life = slot.maxLife;
+  slot.spin = Math.random() * Math.PI * 2;
+  slot.vx = (Math.random() - 0.5) * 0.014;
+  slot.vy = 0.004 + Math.random() * 0.012;
+  slot.vz = (Math.random() - 0.5) * 0.01;
+  slot.hue = Math.random();
+}
+
+function updateButterflyDust(time, delta, active) {
+  butterflyDust.visible = active;
+  if (!active) return;
+
+  butterflyDustUniforms.uTime.value = time * 0.001;
+  const wingFlap = butterflyMixer ? 1 + Math.abs(Math.sin(time * 0.012)) * 1.6 : 1.4;
+  const emitCount = Math.floor(wingFlap + Math.random() * 2);
+  for (let i = 0; i < emitCount; i++) spawnButterflyDustParticle();
+
+  for (let i = 0; i < BUTTERFLY_DUST_COUNT; i++) {
+    const p = butterflyDustData[i];
+    const i3 = i * 3;
+    if (p.life <= 0) {
+      butterflyDustSizes[i] = 0;
+      butterflyDustAlphas[i] = 0;
+      butterflyDustPositions[i3] = 0;
+      butterflyDustPositions[i3 + 1] = 0;
+      butterflyDustPositions[i3 + 2] = -99;
+      continue;
+    }
+
+    p.life -= delta;
+    const lifeT = Math.max(0, p.life / p.maxLife);
+    const swirl = p.spin + time * 0.0025;
+    p.x += p.vx + Math.cos(swirl) * 0.0018;
+    p.y += p.vy + Math.sin(time * 0.003 + i) * 0.0012;
+    p.z += p.vz + Math.sin(swirl) * 0.0012;
+    p.vy += 0.0008 * delta * 60;
+    p.vx *= 0.992;
+    p.vz *= 0.992;
+
+    butterflyDustPositions[i3] = p.x;
+    butterflyDustPositions[i3 + 1] = p.y;
+    butterflyDustPositions[i3 + 2] = p.z;
+    butterflyDustSizes[i] = (0.12 + (1 - lifeT) * 0.18) * (0.35 + lifeT * 0.65)
+      * (0.88 + Math.sin(p.spin + time * 0.004) * 0.12);
+    butterflyDustAlphas[i] = lifeT * lifeT * 0.92;
+    setButterflyDustColor(i3, p.hue);
+  }
+
+  butterflyDustGeometry.attributes.position.needsUpdate = true;
+  butterflyDustGeometry.attributes.color.needsUpdate = true;
+  butterflyDustGeometry.attributes.size.needsUpdate = true;
+  butterflyDustGeometry.attributes.alpha.needsUpdate = true;
+}
+
+let butterflyModel = null;
+let butterflyWrap = null;
+let butterflyMixer = null;
+const butterflyClock = new THREE.Clock();
+const butterflyAnchor = new THREE.Vector3();
+const butterflyBase = { scale: 0.54, rotY: 1.12, rotX: -0.38, rotZ: 0.18, offsetX: 0.48, offsetY: 0.05 };
+const butterflyFlight = { x: 0, y: 0, prevX: 0, prevY: 0 };
+const butterflyTarget = { x: 0, y: 0 };
+const butterflyLaunch = { x: 0, y: 0 };
+const SCROLL_FLIGHT_START = 45;
+
+function seededRandom(seed) {
+  const x = Math.sin(seed * 127.1 + 311.7) * 43758.5453;
+  return x - Math.floor(x);
+}
+
+function buildSmoothFlightCurve() {
+  const anchors = [
+    0.10, 0.78, 0.18, 0.62, 0.14, 0.88, 0.28, 0.72, 0.16, 0.90,
+    0.34, 0.82, 0.22, 0.86, 0.40, 0.74, 0.26, 0.92, 0.48, 0.80, 0.36
+  ];
+  return anchors.map((dx, i) => ({
+    t: i / (anchors.length - 1),
+    dx: Math.min(0.93, Math.max(0.10, dx + (seededRandom(i * 7 + 3) - 0.5) * 0.05)),
+    dy: (i / (anchors.length - 1)) * 0.95
+  }));
+}
+
+const flightPath = buildSmoothFlightCurve();
+
+function buildAngleCurve() {
+  const views = [
+    { yaw: 0,     pitch: 0,     roll: 0 },
+    { yaw: 1.65,  pitch: 0.35,  roll: 0.28 },
+    { yaw: -1.45, pitch: -0.55, roll: -0.32 },
+    { yaw: 2.75,  pitch: 0.15,  roll: 0.38 },
+    { yaw: -2.2,  pitch: -0.75, roll: -0.22 },
+    { yaw: 0.95,  pitch: 0.55,  roll: 0.18 },
+    { yaw: -0.85, pitch: -0.2,  roll: -0.42 },
+    { yaw: 1.35,  pitch: 0.45,  roll: 0.3 },
+    { yaw: -1.75, pitch: -0.65, roll: 0.15 },
+    { yaw: 2.35,  pitch: 0.1,   roll: -0.28 },
+    { yaw: 0.55,  pitch: -0.3,  roll: 0.12 }
+  ];
+  return views.map((view, i) => ({
+    t: i / (views.length - 1),
+    yaw: view.yaw,
+    pitch: view.pitch,
+    roll: view.roll
+  }));
+}
+
+const anglePath = buildAngleCurve();
+
+function sampleAnglePath(progress) {
+  const p = Math.min(1, Math.max(0, progress));
+  for (let i = 0; i < anglePath.length - 1; i++) {
+    const a = anglePath[i];
+    const b = anglePath[i + 1];
+    if (p >= a.t && p <= b.t) {
+      const local = (p - a.t) / (b.t - a.t);
+      const ease = local * local * (3 - 2 * local);
+      return {
+        yaw: a.yaw + (b.yaw - a.yaw) * ease,
+        pitch: a.pitch + (b.pitch - a.pitch) * ease,
+        roll: a.roll + (b.roll - a.roll) * ease
+      };
+    }
+  }
+  const last = anglePath[anglePath.length - 1];
+  return { yaw: last.yaw, pitch: last.pitch, roll: last.roll };
+}
+
+function getButterflyWander(time, progress, vw, vh) {
+  const phase = butterflyWanderSeed;
+  return {
+    x: Math.sin(time * 0.0011 + phase) * vw * 0.032
+      + Math.cos(time * 0.0016 + progress * 5.7 + phase) * vw * 0.024
+      + Math.sin(time * 0.0007 + progress * 11.3) * vw * 0.016,
+    y: Math.sin(time * 0.0013 + progress * 4.9 + phase) * vh * 0.014
+      + Math.cos(time * 0.0019 + progress * 8.1) * vh * 0.009
+  };
+}
+
+const butterflyWanderSeed = Math.random() * Math.PI * 2;
+const butterflyRot = { x: 0, y: 0, z: 0 };
+const butterflyDepth = { scaleMul: 1, zOffset: 0 };
+
+function getFlightDepthTargets(time, progress) {
+  const w1 = Math.sin(progress * 9.2 + time * 0.0013);
+  const w2 = Math.sin(progress * 15.7 + time * 0.0019 + 2.1);
+  const w3 = Math.cos(window.scrollY * 0.003 + time * 0.0008);
+  const mix = w1 * 0.42 + w2 * 0.33 + w3 * 0.25;
+  return {
+    scaleMul: 1 + mix * 0.26,
+    zOffset: mix * 0.45
+  };
+}
+
+function updateButterflyDepth(time, flying) {
+  if (!flying) {
+    butterflyDepth.scaleMul += (1 - butterflyDepth.scaleMul) * 0.14;
+    butterflyDepth.zOffset += (0 - butterflyDepth.zOffset) * 0.14;
+    butterflyCamera.position.z = 5;
+    return;
+  }
+  const targets = getFlightDepthTargets(time, getScrollFlightProgress());
+  butterflyDepth.scaleMul += (targets.scaleMul - butterflyDepth.scaleMul) * 0.07;
+  butterflyDepth.zOffset += (targets.zOffset - butterflyDepth.zOffset) * 0.07;
+  butterflyCamera.position.z = 5 - butterflyDepth.zOffset * 0.9;
+}
+
+function applyButterflyDepthToModel() {
+  if (!butterflyModel) return;
+  butterflyModel.scale.setScalar(butterflyBase.scale * butterflyDepth.scaleMul);
+}
+
+function resizeButterflyStage() {
+  butterflyCamera.aspect = window.innerWidth / window.innerHeight;
+  butterflyCamera.updateProjectionMatrix();
+  butterflyRenderer.setSize(window.innerWidth, window.innerHeight, false);
+}
+
+function getNameScreenPos() {
+  const nameEl = document.querySelector('.name-first');
+  if (!nameEl) return null;
+  const rect = nameEl.getBoundingClientRect();
+  return {
+    x: Math.max(32, rect.left - 90),
+    y: rect.top + rect.height * 0.18
+  };
+}
+
+function sampleFlightPath(progress) {
+  const p = Math.min(1, Math.max(0, progress));
+  for (let i = 0; i < flightPath.length - 1; i++) {
+    const a = flightPath[i];
+    const b = flightPath[i + 1];
+    if (p >= a.t && p <= b.t) {
+      const local = (p - a.t) / (b.t - a.t);
+      const ease = local * local * local * (local * (local * 6 - 15) + 10);
+      return {
+        dx: a.dx + (b.dx - a.dx) * ease,
+        dy: a.dy + (b.dy - a.dy) * ease
+      };
+    }
+  }
+  const last = flightPath[flightPath.length - 1];
+  return { dx: last.dx, dy: last.dy };
+}
+
+function getScrollFlightProgress() {
+  const vh = window.innerHeight;
+  const maxScroll = Math.max(1, document.documentElement.scrollHeight - vh);
+  return Math.min(1, Math.max(0, (window.scrollY - SCROLL_FLIGHT_START) / (maxScroll - SCROLL_FLIGHT_START)));
+}
+
+function updateButterflyFlightTarget() {
+  if (!butterflyModel) return;
+
+  const mobileLite = isMobileViewport();
+  const show = !prefersReducedMotion;
+
+  if (butterflyWrap) butterflyWrap.visible = show;
+  butterflyModel.visible = show;
+  butterflyLight.visible = show;
+  if (!show) return;
+
+  const scrollY = window.scrollY;
+  const vh = window.innerHeight;
+  const namePos = getNameScreenPos();
+  if (!namePos) return;
+
+  if (mobileLite) {
+    const inHeroZone = getActiveSectionId() === 'hero' && scrollY < vh * 0.92;
+    if (!inHeroZone) {
+      butterflyWrap.visible = false;
+      return;
+    }
+    butterflyWrap.visible = true;
+    butterflyModel.scale.setScalar(butterflyBase.scale * 0.4);
+    butterflyTarget.x = namePos.x;
+    butterflyTarget.y = namePos.y;
+    return;
+  }
+
+  const inHero = getActiveSectionId() === 'hero' && scrollY < SCROLL_FLIGHT_START;
+
+  if (inHero) {
+    butterflyLaunch.x = namePos.x;
+    butterflyLaunch.y = namePos.y;
+    butterflyTarget.x = namePos.x;
+    butterflyTarget.y = namePos.y;
+    return;
+  }
+
+  if (scrollY < SCROLL_FLIGHT_START) {
+    butterflyLaunch.x = namePos.x;
+    butterflyLaunch.y = namePos.y;
+    butterflyTarget.x = namePos.x;
+    butterflyTarget.y = namePos.y;
+    return;
+  }
+
+  const maxScroll = Math.max(1, document.documentElement.scrollHeight - vh);
+  const progress = Math.min(1, (scrollY - SCROLL_FLIGHT_START) / (maxScroll - SCROLL_FLIGHT_START));
+  const path = sampleFlightPath(progress);
+  const vw = window.innerWidth;
+  const wander = getButterflyWander(Date.now(), progress, vw, vh);
+  const pathX = path.dx * vw + wander.x;
+  const blend = Math.min(1, progress / 0.06);
+
+  butterflyTarget.x = butterflyLaunch.x * (1 - blend) + pathX * blend;
+  butterflyTarget.y = butterflyLaunch.y + path.dy * vh + wander.y;
+  butterflyTarget.x = Math.min(Math.max(butterflyTarget.x, 32), vw - 28);
+  butterflyTarget.y = Math.min(Math.max(butterflyTarget.y, 56), vh * 0.92);
+}
+
+function screenToButterflyWorld(screenX, screenY) {
+  const ndcX = (screenX / window.innerWidth) * 2 - 1;
+  const ndcY = -(screenY / window.innerHeight) * 2 + 1;
+  const vector = new THREE.Vector3(ndcX, ndcY, 0.5);
+  vector.unproject(butterflyCamera);
+  const dir = vector.sub(butterflyCamera.position).normalize();
+  const dist = -butterflyCamera.position.z / dir.z;
+  return butterflyCamera.position.clone().add(dir.multiplyScalar(dist));
+}
+
+function applyButterflyWorldPosition(screenX, screenY) {
+  if (!butterflyWrap) return;
+  butterflyAnchor.copy(screenToButterflyWorld(screenX, screenY));
+  butterflyAnchor.x += butterflyBase.offsetX;
+  butterflyAnchor.y += butterflyBase.offsetY;
+  butterflyWrap.position.set(butterflyAnchor.x, butterflyAnchor.y, butterflyAnchor.z);
+  applyButterflyDepthToModel();
+  butterflyLight.position.set(
+    butterflyAnchor.x + 0.25,
+    butterflyAnchor.y + 0.15,
+    butterflyAnchor.z + 0.8
+  );
+}
+
+const gltfLoader = new THREE.GLTFLoader();
+let butterflyLoadStarted = false;
+
+function loadButterflyModel() {
+  if (butterflyLoadStarted || prefersReducedMotion) return;
+  butterflyLoadStarted = true;
+
+  gltfLoader.load(
+  'animated_butterfly/scene.gltf',
+  (gltf) => {
+    butterflyWrap = new THREE.Group();
+    butterflyModel = gltf.scene;
+    butterflyModel.rotation.set(0, 0, 0);
+    butterflyWrap.rotation.set(butterflyBase.rotX, butterflyBase.rotY, butterflyBase.rotZ);
+    butterflyRot.x = butterflyBase.rotX;
+    butterflyRot.y = butterflyBase.rotY;
+    butterflyRot.z = butterflyBase.rotZ;
+    butterflyWrap.add(butterflyModel);
+    butterflyScene.add(butterflyWrap);
+    const start = getNameScreenPos();
+    if (start) {
+      butterflyLaunch.x = start.x;
+      butterflyLaunch.y = start.y;
+      butterflyFlight.x = start.x;
+      butterflyFlight.y = start.y;
+      butterflyTarget.x = start.x;
+      butterflyTarget.y = start.y;
+    }
+    updateButterflyFlightTarget();
+
+    const flyingClip = gltf.animations.find((clip) => clip.name === 'Flying') || gltf.animations[0];
+    if (flyingClip) {
+      butterflyMixer = new THREE.AnimationMixer(butterflyModel);
+      butterflyMixer.clipAction(flyingClip).play();
+    }
+  },
+  undefined,
+  (error) => console.error('Butterfly model failed to load:', error)
+  );
+}
+
+if (!prefersReducedMotion) {
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(() => loadButterflyModel(), { timeout: 2500 });
+  } else {
+    setTimeout(loadButterflyModel, 500);
+  }
+}
+
+const tempVector = new THREE.Vector3();
+const mouseNdc = new THREE.Vector2();
+const mouseWorld = new THREE.Vector3();
+const mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+const raycaster = new THREE.Raycaster();
+
+function updateMouseWorld() {
+  mouseNdc.x = (mx / window.innerWidth) * 2 - 1;
+  mouseNdc.y = -(my / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(mouseNdc, camera);
+  if (!raycaster.ray.intersectPlane(mousePlane, mouseWorld)) {
+    mouseWorld.set(0, 0, 0);
+  }
+}
+
+function isInteractiveTarget(target) {
+  return Boolean(target.closest('a, button, input, textarea, select, nav, .nav-toggle, .nav-links'));
+}
+
+let transitionPhase = 'idle';
+let transitionT = 0;
+let glitterTimer = 0;
+let lastSectionId = 'hero';
+const breathingAmplitude = 0.15;
+const breathingSpeed = 0.002;
+
+function easeInOutCubic(t) {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+function easeOutQuart(t) {
+  return 1 - Math.pow(1 - t, 4);
+}
+
+function easeOutExpo(t) {
+  return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t);
+}
+
+function lerpParticle(pos, i3, tx, ty, tz, speed) {
+  pos[i3]     += (tx - pos[i3]) * speed;
+  pos[i3 + 1] += (ty - pos[i3 + 1]) * speed;
+  pos[i3 + 2] += (tz - pos[i3 + 2]) * speed;
+}
+
+function getViewportSpreadBounds() {
+  const vFov = camera.fov * Math.PI / 180;
+  const dist = camera.position.z;
+  const viewH = 2 * Math.tan(vFov / 2) * dist;
+  const viewW = viewH * camera.aspect;
+  return { viewW, viewH };
+}
+
+function computeSpreadTargets() {
+  const { viewW, viewH } = getViewportSpreadBounds();
+  const margin = 1.12;
+  for (let p = 0; p < PARTICLE_COUNT; p++) {
+    const i3 = p * 3;
+    particleSpreadTarget[i3]     = (Math.random() * 2 - 1) * viewW * 0.5 * margin;
+    particleSpreadTarget[i3 + 1] = (Math.random() * 2 - 1) * viewH * 0.5 * margin;
+    particleSpreadTarget[i3 + 2] = (Math.random() * 2 - 1) * 3.4;
+  }
+}
+
+function easeInOutSine(t) {
+  return -(Math.cos(Math.PI * t) - 1) / 2;
+}
+
+function seedParticlesFromBalls() {
+  let p = 0;
+  for (let b = 0; b < BALL_COUNT; b++) {
+    const ball = spheres[b];
+    const r = ball.userData.radius;
+    for (let j = 0; j < PARTICLES_PER_BALL; j++) {
+      const i3 = p * 3;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      const dist = Math.random() * r * 0.42;
+      const ox = Math.sin(phi) * Math.cos(theta) * dist;
+      const oy = Math.sin(phi) * Math.sin(theta) * dist;
+      const oz = Math.cos(phi) * dist;
+      particleLocalOffset[i3]     = ox;
+      particleLocalOffset[i3 + 1] = oy;
+      particleLocalOffset[i3 + 2] = oz;
+      const bx = Math.sin(phi) * Math.cos(theta) + (Math.random() - 0.5) * 0.35;
+      const by = Math.sin(phi) * Math.sin(theta) + (Math.random() - 0.5) * 0.35;
+      const bz = Math.cos(phi) + (Math.random() - 0.5) * 0.35;
+      const blen = Math.sqrt(bx * bx + by * by + bz * bz) || 1;
+      particleBurstDir[i3]     = (bx / blen) * (0.75 + Math.random() * 0.55);
+      particleBurstDir[i3 + 1] = (by / blen) * (0.75 + Math.random() * 0.55);
+      particleBurstDir[i3 + 2] = (bz / blen) * (0.75 + Math.random() * 0.55);
+      particleBurstPower[p] = 0.9 + Math.random() * 1.1;
+      particlePositions[i3]     = ball.position.x + ox;
+      particlePositions[i3 + 1] = ball.position.y + oy;
+      particlePositions[i3 + 2] = ball.position.z + oz;
+      particleBallIndex[p] = b;
+      particleSizes[p] = 0.02;
+      setNeonParticleColor(i3, Math.random(), 0.4);
+      p += 1;
+    }
+  }
+  particleGeometry.attributes.position.needsUpdate = true;
+  particleGeometry.attributes.color.needsUpdate = true;
+  particleGeometry.attributes.size.needsUpdate = true;
+}
+
+function dissolveBallsToParticles() {
+  if (transitionPhase !== 'idle') return;
+  seedParticlesFromBalls();
+  computeSpreadTargets();
+  particles.visible = true;
+  transitionPhase = 'blast';
+  transitionT = 0;
+}
+
+function finishTransition() {
+  transitionPhase = 'idle';
+  transitionT = 0;
+  glitterTimer = 0;
+  particles.visible = false;
+  spheres.forEach((sphere) => {
+    sphere.visible = true;
+    sphere.scale.set(1, 1, 1);
+    sphere.material.opacity = 1;
+  });
+}
+
+function getBallAnchor(ball, i3, time, wobble = 0) {
+  const r = ball.userData.radius;
+  const wobbleScale = wobble * r * 0.1;
+  return {
+    x: ball.position.x + particleLocalOffset[i3] + Math.sin(time * 0.0011 + i3) * wobbleScale,
+    y: ball.position.y + particleLocalOffset[i3 + 1] + Math.cos(time * 0.0013 + i3 * 0.7) * wobbleScale,
+    z: ball.position.z + particleLocalOffset[i3 + 2]
+  };
+}
+
+function updateScrollTransition(time) {
+  const pos = particleGeometry.attributes.position.array;
+  particleUniforms.uTime.value = time * 0.001;
+
+  if (transitionPhase === 'blast') {
+    transitionT = Math.min(1, transitionT + 0.022);
+    const blastEase = easeOutExpo(transitionT);
+    const burstEase = easeOutQuart(transitionT);
+
+    spheres.forEach((sphere) => {
+      if (transitionT < 0.1) {
+        sphere.visible = true;
+        const pop = 1 + burstEase * 0.45;
+        sphere.scale.set(pop, pop, pop);
+        sphere.material.opacity = 1 - transitionT / 0.1;
+      } else {
+        sphere.visible = false;
+        sphere.scale.set(0.001, 0.001, 0.001);
+        sphere.material.opacity = 0;
+      }
+    });
+
+    for (let p = 0; p < PARTICLE_COUNT; p++) {
+      const i3 = p * 3;
+      const ball = spheres[particleBallIndex[p]];
+      const origin = getBallAnchor(ball, i3, time, 0);
+      const power = ball.userData.radius * particleBurstPower[p];
+      const burstX = origin.x + particleBurstDir[i3] * power * (3 + burstEase * 12);
+      const burstY = origin.y + particleBurstDir[i3 + 1] * power * (3 + burstEase * 12);
+      const burstZ = origin.z + particleBurstDir[i3 + 2] * power * (3 + burstEase * 12);
+      const sx = particleSpreadTarget[i3];
+      const sy = particleSpreadTarget[i3 + 1];
+      const sz = particleSpreadTarget[i3 + 2];
+      const spreadMix = Math.pow(blastEase, 0.75);
+      const tx = burstX + (sx - burstX) * spreadMix;
+      const ty = burstY + (sy - burstY) * spreadMix;
+      const tz = burstZ + (sz - burstZ) * spreadMix;
+      lerpParticle(pos, i3, tx, ty, tz, 0.14 + burstEase * 0.08);
+      const targetSize = 0.08 + burstEase * (0.42 + (p % 5) * 0.06);
+      particleSizes[p] += (targetSize - particleSizes[p]) * 0.18;
+      setNeonParticleColor(i3, (p * 0.07 + burstEase * 0.5) % 1, 0.6 + burstEase * 0.5);
+    }
+
+    if (transitionT >= 1) {
+      spheres.forEach((sphere) => { sphere.visible = false; });
+      transitionPhase = 'glitter';
+      glitterTimer = 48;
+      transitionT = 0;
+    }
+  } else if (transitionPhase === 'glitter') {
+    glitterTimer -= 1;
+    const shimmer = (Math.sin(time * 0.0045) + 1) * 0.5;
+
+    for (let p = 0; p < PARTICLE_COUNT; p++) {
+      const i3 = p * 3;
+      const sx = particleSpreadTarget[i3];
+      const sy = particleSpreadTarget[i3 + 1];
+      const sz = particleSpreadTarget[i3 + 2];
+      const wobble = 0.35 + shimmer * 0.25;
+      const tx = sx + Math.sin(time * 0.0022 + p * 0.6) * wobble;
+      const ty = sy + Math.cos(time * 0.0019 + p * 0.8) * wobble;
+      const tz = sz + Math.sin(time * 0.0025 + p) * wobble * 0.5;
+      lerpParticle(pos, i3, tx, ty, tz, 0.06);
+      const twinkle = Math.sin(time * 0.0055 + p * 1.3) * 0.5 + 0.5;
+      const targetSize = 0.28 + twinkle * 0.22 + shimmer * 0.12;
+      particleSizes[p] += (targetSize - particleSizes[p]) * 0.12;
+      setNeonParticleColor(i3, (twinkle + p * 0.03 + time * 0.0004) % 1, 0.95 + twinkle * 0.35);
+    }
+
+    if (glitterTimer <= 0) {
+      transitionPhase = 'reform';
+      transitionT = 0;
+    }
+  } else if (transitionPhase === 'reform') {
+    transitionT = Math.min(1, transitionT + 0.008);
+    const reformEase = easeInOutSine(transitionT);
+
+    spheres.forEach((sphere) => {
+      sphere.visible = reformEase > 0.08;
+      sphere.scale.set(reformEase, reformEase, reformEase);
+      sphere.material.opacity = reformEase;
+    });
+
+    for (let p = 0; p < PARTICLE_COUNT; p++) {
+      const i3 = p * 3;
+      const ball = spheres[particleBallIndex[p]];
+      const target = getBallAnchor(ball, i3, time, 0);
+      lerpParticle(pos, i3, target.x, target.y, target.z, 0.04 + reformEase * 0.05);
+      const targetSize = (1 - reformEase) * (0.32 + Math.sin(time * 0.004 + p) * 0.08);
+      particleSizes[p] += (targetSize - particleSizes[p]) * 0.1;
+      setNeonParticleColor(i3, reformEase * 0.4, 0.5 * (1 - reformEase));
+    }
+
+    if (transitionT >= 1) finishTransition();
+  }
+
+  particleGeometry.attributes.position.needsUpdate = true;
+  particleGeometry.attributes.color.needsUpdate = true;
+  particleGeometry.attributes.size.needsUpdate = true;
+}
+
+function updateBallColors(time) {
+  spheres.forEach((sphere, i) => {
+    const wave = (Math.sin(time * colorCycleSpeed + i * 0.42) + 1) / 2;
+    const floatIndex = wave * (pinkColorCycle.length - 1);
+    const i0 = Math.floor(floatIndex);
+    const i1 = Math.min(i0 + 1, pinkColorCycle.length - 1);
+    const frac = floatIndex - i0;
+    tempCycleColor.copy(pinkColorCycle[i0]).lerp(pinkColorCycle[i1], frac);
+    sphere.material.color.copy(tempCycleColor);
+    tempCycleEmissive.copy(tempCycleColor).lerp(innerGlowColor, 0.45).multiplyScalar(0.46);
+    sphere.material.emissive.copy(tempCycleEmissive);
+
+    let hoverBoost = 0;
+    if (transitionPhase === 'idle') {
+      const dx = sphere.position.x - mouseWorld.x;
+      const dy = sphere.position.y - mouseWorld.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      hoverBoost = Math.max(0, 1 - dist / (sphere.userData.radius * 4.2));
+    }
+    sphere.material.emissiveIntensity = 0.18 + wave * 0.22 + hoverBoost * 0.38 + sphere.userData.clickPulse * 0.45;
+
+    const innerCore = sphere.userData.innerCore;
+    if (innerCore) {
+      innerCore.material.opacity = 0.16 + wave * 0.26 + hoverBoost * 0.2 + sphere.userData.clickPulse * 0.25;
+      innerCore.scale.setScalar(0.4 + wave * 0.22 + hoverBoost * 0.15);
+    }
+  });
+}
+
+function updateBalls(time) {
+  const motion = prefersReducedMotion ? 0.15 : 1;
+  const breatheTime = time * breathingSpeed * motion;
+  const mouseActive = transitionPhase === 'idle' && !prefersReducedMotion;
+
+  if (mouseActive) updateMouseWorld();
+
+  spheres.forEach((sphere, i) => {
+    const offset = i * 0.5;
+    const breathingY = Math.sin(breatheTime + offset) * breathingAmplitude * motion;
+    const breathingZ = Math.cos(breatheTime + offset) * breathingAmplitude * 0.5 * motion;
+    const originalPos = sphere.userData.originalPosition;
+    tempVector.set(originalPos.x, originalPos.y + breathingY, originalPos.z + breathingZ);
+
+    if (mouseActive) {
+      const dx = tempVector.x - mouseWorld.x;
+      const dy = tempVector.y - mouseWorld.y;
+      const dist = Math.sqrt(dx * dx + dy * dy) || 0.001;
+      const reach = 3.4;
+
+      if (dist < reach) {
+        const strength = (1 - dist / reach) * 0.5;
+        tempVector.x += (dx / dist) * strength;
+        tempVector.y += (dy / dist) * strength;
+      }
+
+      sphere.userData.pushX *= 0.88;
+      sphere.userData.pushY *= 0.88;
+      tempVector.x += sphere.userData.pushX;
+      tempVector.y += sphere.userData.pushY;
+
+      if (sphere.userData.clickPulse > 0) {
+        sphere.userData.clickPulse = Math.max(0, sphere.userData.clickPulse - 0.032);
+      }
+
+      const hoverProx = Math.max(0, 1 - dist / (sphere.userData.radius * 3.8));
+      const scale = 1 + hoverProx * 0.12 + sphere.userData.clickPulse * 0.32;
+      sphere.scale.set(scale, scale, scale);
+    } else {
+      sphere.userData.pushX = 0;
+      sphere.userData.pushY = 0;
+      sphere.userData.clickPulse = 0;
+      if (sphere.scale.x !== 1) sphere.scale.set(1, 1, 1);
+    }
+
+    sphere.position.lerp(tempVector, prefersReducedMotion ? 0.006 : 0.02);
+  });
+}
+
+window.addEventListener('click', (e) => {
+  if (transitionPhase !== 'idle' || isInteractiveTarget(e.target)) return;
+
+  mx = e.clientX;
+  my = e.clientY;
+  updateMouseWorld();
+
+  spheres.forEach((sphere) => {
+    const dx = sphere.position.x - mouseWorld.x;
+    const dy = sphere.position.y - mouseWorld.y;
+    const dist = Math.sqrt(dx * dx + dy * dy) || 0.001;
+    const hitRadius = sphere.userData.radius * 2.6;
+
+    if (dist < hitRadius) {
+      sphere.userData.clickPulse = 1;
+      const push = (1 - dist / hitRadius) * 1.5 + 0.35;
+      sphere.userData.pushX -= (dx / dist) * push;
+      sphere.userData.pushY -= (dy / dist) * push;
+    }
+  });
+}, { passive: true });
+
+window.addEventListener('scroll', () => {
+  const sectionId = getActiveSectionId();
+  if (sectionId !== lastSectionId) {
+    lastSectionId = sectionId;
+    dissolveBallsToParticles();
+  }
+  updateActiveNav();
+  updateAboutBgParallax();
+  updateButterflyFlightTarget();
+}, { passive: true });
+
+function animateScene() {
+  requestAnimationFrame(animateScene);
+  if (!pageVisible) return;
+
+  const time = Date.now();
+  const delta = butterflyClock.getDelta();
+
+  if (butterflyMixer) butterflyMixer.update(delta);
+
+  if (butterflyWrap && butterflyWrap.visible) {
+    updateButterflyFlightTarget();
+    const flying = window.scrollY >= SCROLL_FLIGHT_START;
+    const ease = flying ? 0.06 : 0.14;
+    butterflyFlight.x += (butterflyTarget.x - butterflyFlight.x) * ease;
+    butterflyFlight.y += (butterflyTarget.y - butterflyFlight.y) * ease;
+
+    applyButterflyWorldPosition(butterflyFlight.x, butterflyFlight.y);
+    updateButterflyDepth(time, flying);
+    if (!flying) {
+      butterflyFlight.x = butterflyTarget.x;
+      butterflyFlight.y = butterflyTarget.y;
+      butterflyFlight.prevX = butterflyTarget.x;
+      butterflyFlight.prevY = butterflyTarget.y;
+      applyButterflyWorldPosition(butterflyFlight.x, butterflyFlight.y);
+      butterflyRot.x = butterflyBase.rotX;
+      butterflyRot.y = butterflyBase.rotY;
+      butterflyRot.z = butterflyBase.rotZ;
+      butterflyWrap.rotation.set(butterflyRot.x, butterflyRot.y, butterflyRot.z);
+    } else {
+      const progress = getScrollFlightProgress();
+      const wander = getButterflyWander(time, progress, window.innerWidth, window.innerHeight);
+      const driftX = Math.sin(time * 0.0011) * 0.03 + wander.x * 0.0015;
+      const driftY = Math.sin(time * 0.0014) * 0.04 + wander.y * 0.0015;
+      const velocityX = butterflyFlight.x - butterflyFlight.prevX;
+      const velocityY = butterflyFlight.y - butterflyFlight.prevY;
+      butterflyFlight.prevX = butterflyFlight.x;
+      butterflyFlight.prevY = butterflyFlight.y;
+
+      butterflyWrap.position.set(
+        butterflyAnchor.x + driftX,
+        butterflyAnchor.y + driftY,
+        butterflyAnchor.z + butterflyDepth.zOffset
+      );
+      applyButterflyDepthToModel();
+
+      const angles = sampleAnglePath(progress);
+      const wobbleY = Math.sin(time * 0.0012 + progress * 9.5) * 0.4;
+      const wobbleX = Math.cos(time * 0.0015 + progress * 7.2) * 0.25;
+      const targetY = butterflyBase.rotY + angles.yaw + velocityX * 0.018 + wobbleY;
+      const targetX = butterflyBase.rotX + angles.pitch + velocityY * 0.006 + wobbleX;
+      const targetZ = butterflyBase.rotZ + angles.roll - velocityX * 0.025;
+
+      butterflyRot.x += (targetX - butterflyRot.x) * 0.11;
+      butterflyRot.y += (targetY - butterflyRot.y) * 0.11;
+      butterflyRot.z += (targetZ - butterflyRot.z) * 0.11;
+      butterflyWrap.rotation.set(butterflyRot.x, butterflyRot.y, butterflyRot.z);
+    }
+
+    updateButterflyDust(time, delta, !prefersReducedMotion && !isMobileViewport());
+  } else {
+    updateButterflyDust(time, delta, false);
+  }
+
+  updateBallColors(time);
+  updateBalls(time);
+  particleUniforms.uTime.value = time * 0.001;
+
+  if (transitionPhase !== 'idle') {
+    updateScrollTransition(time);
+  }
+
+  renderer.render(scene, camera);
+
+  if (butterflyWrap && butterflyWrap.visible) {
+    butterflyRenderer.render(butterflyScene, butterflyCamera);
+  }
+}
+
+animateScene();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  resizeButterflyStage();
+  updateButterflyFlightTarget();
+  updateAboutBgParallax();
+});
+</script>
+</body>
+</html>
