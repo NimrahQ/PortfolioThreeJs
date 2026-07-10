@@ -112,10 +112,22 @@
     }
     .nav-logo {
       font-family: var(--font-display);
-      font-size: 1.5rem; font-weight: 700;
-      color: #ffffff;
-      letter-spacing: 0.15em;
+      font-size: 1.15rem; font-weight: 700;
+      color: #ff2da0;
+      letter-spacing: 0.05em;
       text-decoration: none;
+      text-shadow:
+        0 0 6px rgba(255, 45, 160, 0.9),
+        0 0 18px rgba(255, 45, 160, 0.65),
+        0 0 36px rgba(255, 20, 147, 0.45);
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+    .nav-logo:hover {
+      color: #ff6ec7;
+      text-shadow:
+        0 0 8px rgba(255, 110, 199, 1),
+        0 0 22px rgba(255, 45, 160, 0.85),
+        0 0 48px rgba(255, 20, 147, 0.6);
     }
     .nav-links { display: flex; gap: 3rem; list-style: none; }
     .nav-links a {
@@ -903,7 +915,7 @@
     /* ── REVEAL MECHANICS ───────────────────────────────── */
     .reveal { opacity: 0; transform: translateY(35px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
-    #typewriter::after { content: '_'; animation: blink 0.9s infinite; color: #d4b483; }
+    #typewriter::after { content: '_'; animation: blink 0.9s infinite; color: #ff2da0; }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
     /* ── BREAKPOINTS ────────────────────────────────────── */
@@ -1071,7 +1083,7 @@
 <div id="cursor-ring"></div>
 
 <nav id="navbar">
-  <a href="#hero" class="nav-logo">NQ</a>
+  <a href="#hero" class="nav-logo">NimrahQureshi</a>
   <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
     <span></span><span></span><span></span>
   </button>
@@ -1087,11 +1099,10 @@
 
 <section id="hero">
   <div class="hero-content">
-    <div class="hero-eyebrow">Available for Frontend &amp; Full-Stack Roles</div>
     <h1 class="hero-name">
       <span class="name-first">Nimrah</span><br/><span class="name-gold">Qureshi</span>
     </h1>
-    <p class="hero-headline">Full-Stack JavaScript Developer</p>
+    <p class="hero-headline"><span id="typewriter"></span></p>
     <p class="hero-stack">React • Next.js • Node.js • TypeScript</p>
     <p class="hero-desc">
       I build high-performance web applications and national-scale education platforms — from polished React/Next.js interfaces to resilient APIs — serving <strong>100,000+ daily users</strong> in production.
@@ -1492,6 +1503,58 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal, .timeline-item').forEach(el => observer.observe(el));
 
+/* ── ROTATING ROLE TYPEWRITER ──────────────────────────── */
+const roles = [
+  'Next.js Developer',
+  'React.js Developer',
+  'Node.js Developer',
+  'TypeScript Developer',
+  'Full-Stack Developer',
+  'Frontend Developer'
+];
+const typewriterEl = document.getElementById('typewriter');
+
+function startRoleTypewriter() {
+  if (!typewriterEl) return;
+
+  if (prefersReducedMotion) {
+    typewriterEl.textContent = roles[0];
+    return;
+  }
+
+  let roleIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+
+  function typeRole() {
+    const current = roles[roleIndex];
+
+    if (!isDeleting) {
+      typewriterEl.textContent = current.slice(0, charIndex + 1);
+      charIndex += 1;
+      if (charIndex === current.length) {
+        setTimeout(() => { isDeleting = true; typeRole(); }, 2200);
+        return;
+      }
+      setTimeout(typeRole, 70);
+      return;
+    }
+
+    typewriterEl.textContent = current.slice(0, charIndex - 1);
+    charIndex -= 1;
+    if (charIndex === 0) {
+      isDeleting = false;
+      roleIndex = (roleIndex + 1) % roles.length;
+      setTimeout(typeRole, 400);
+      return;
+    }
+    setTimeout(typeRole, 35);
+  }
+
+  typeRole();
+}
+
+startRoleTypewriter();
 
 /* ── PINK BALLS + SCROLL PARTICLE DISSOLVE ─────────────── */
 const PARTICLES_PER_BALL = 10;
