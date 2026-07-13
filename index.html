@@ -112,15 +112,16 @@
     }
     .nav-logo {
       font-family: var(--font-display);
-      font-size: 1.5rem; font-weight: 700;
+      font-size: 1.15rem; font-weight: 700;
       color: #ffffff;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.08em;
       text-decoration: none;
+      white-space: nowrap;
     }
     .nav-links { display: flex; gap: 3rem; list-style: none; }
     .nav-links a {
-      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase;
-      color: var(--text-muted); text-decoration: none;
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.82); text-decoration: none;
       position: relative; padding: 0.5rem 0;
       transition: color 0.3s;
     }
@@ -222,7 +223,7 @@
     }
     .hero-content {
       position: relative;
-      z-index: 2;
+      z-index: 4;
       max-width: 820px;
       padding: 2.5rem 3rem 2.5rem 0;
     }
@@ -236,15 +237,20 @@
     }
     .hero-content .hero-eyebrow,
     .hero-content .hero-headline,
-    .hero-content .hero-stack,
     .hero-content .hero-role,
-    .hero-content .hero-desc,
     .hero-content .stat-val,
     .hero-content .stat-lbl {
       text-shadow:
         0 1px 3px rgba(0, 0, 0, 0.95),
         0 4px 20px rgba(0, 0, 0, 0.88),
         0 0 40px rgba(6, 6, 6, 0.85);
+    }
+    .hero-content .hero-stack,
+    .hero-content .hero-desc {
+      text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.98),
+        0 6px 24px rgba(0, 0, 0, 0.92),
+        0 0 48px rgba(0, 0, 0, 0.85);
     }
     .hero-content .hero-name {
       text-shadow:
@@ -273,18 +279,20 @@
     }
     .hero-headline {
       font-family: var(--font-display);
-      font-size: clamp(1.25rem, 2.8vw, 1.85rem);
-      font-weight: 600;
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      font-weight: 700;
       color: #ffffff;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
       margin-bottom: 0.85rem;
-      line-height: 1.25;
+      line-height: 1.3;
+      min-height: 2.6rem;
     }
     .hero-stack {
       font-family: var(--font-mono);
-      font-size: clamp(0.78rem, 1.4vw, 0.92rem);
-      letter-spacing: 0.08em;
-      color: var(--gold-bright);
+      font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: #ffffff;
       margin-bottom: 1.75rem;
     }
     .hero-role {
@@ -293,29 +301,51 @@
       margin-bottom: 2.5rem; min-height: 2.5rem;
     }
     .hero-desc {
-      font-size: 1.05rem;
-      font-weight: 400;
-      line-height: 1.8;
-      color: #ece0cc;
-      max-width: 620px;
+      font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+      font-weight: 600;
+      line-height: 1.75;
+      color: #ffffff;
+      max-width: 640px;
       margin-bottom: 4rem;
+      letter-spacing: 0.015em;
+      -webkit-font-smoothing: antialiased;
     }
     .hero-desc strong {
-      color: #e8d9c0;
-      font-weight: 600;
+      color: var(--gold-bright);
+      font-weight: 800;
     }
     
     .hero-stats {
       display: flex;
       gap: 4.5rem;
       margin-bottom: 4.5rem;
-      border-left: 1px solid var(--border-subtle);
+      border-left: 1px solid rgba(255, 255, 255, 0.25);
       padding-left: 2rem;
     }
-    .stat-val { font-family: var(--font-display); font-size: 2.25rem; font-weight: 400; color: #ffffff; }
-    .stat-lbl { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255, 255, 255, 0.55); margin-top: 0.25rem; font-weight: 500; }
+    .stat-val {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 2.5rem);
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.02em;
+    }
+    .stat-lbl {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.88);
+      margin-top: 0.35rem;
+      font-weight: 600;
+    }
     
-    .hero-ctas { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .hero-ctas {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 5;
+      padding-top: 0.5rem;
+    }
     .btn-primary, .btn-secondary {
       padding: 1.1rem 2.8rem;
       font-family: var(--font-display); font-size: 0.75rem;
@@ -327,6 +357,52 @@
     .btn-primary:hover { background: #fff; transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
     .btn-secondary { border: 1px solid var(--border-subtle); color: #fff; }
     .btn-secondary:hover { border-color: #ffffff; color: #ffffff; transform: translateY(-3px); }
+
+    #hero .hero-ctas .btn-primary,
+    #hero .hero-ctas .btn-secondary {
+      padding: 1.2rem 2.5rem;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      border-radius: 6px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.42),
+        inset 0 -1px 0 rgba(154, 123, 67, 0.12);
+      isolation: isolate;
+    }
+    #hero .hero-ctas .btn-primary {
+      background: rgba(243, 224, 190, 0.78);
+      color: #3d2f1a;
+      border: 1px solid rgba(255, 248, 235, 0.7);
+    }
+    #hero .hero-ctas .btn-primary:hover {
+      background: rgba(255, 236, 210, 0.92);
+      border-color: rgba(255, 252, 245, 0.95);
+      color: #2a2012;
+      transform: translateY(-4px);
+      box-shadow:
+        0 14px 40px rgba(0, 0, 0, 0.62),
+        0 0 24px rgba(243, 224, 190, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    }
+    #hero .hero-ctas .btn-secondary {
+      background: rgba(212, 178, 111, 0.22);
+      color: #f3e0be;
+      border: 1px solid rgba(243, 224, 190, 0.42);
+    }
+    #hero .hero-ctas .btn-secondary:hover {
+      background: rgba(243, 224, 190, 0.38);
+      color: #fff8ee;
+      border-color: rgba(255, 248, 235, 0.65);
+      transform: translateY(-4px);
+      box-shadow:
+        0 14px 40px rgba(0, 0, 0, 0.62),
+        0 0 20px rgba(212, 178, 111, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
 
     .scroll-hint {
       position: absolute; bottom: 3rem; right: 10vw;
@@ -537,11 +613,20 @@
       z-index: 1;
     }
     .project-logo {
-      width: 74px;
-      height: auto;
+      width: auto;
+      max-width: 168px;
+      height: 44px;
       object-fit: contain;
+      object-position: left center;
       margin-bottom: 1rem;
       filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.35));
+    }
+    .project-logo--nodp {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 6px;
+      padding: 6px 10px;
+      height: auto;
+      max-height: 52px;
     }
     a.project-card { text-decoration: none; color: inherit; }
     .project-card:hover {
@@ -965,7 +1050,8 @@
 
       .hero-name { font-size: clamp(2.6rem, 12vw, 4.5rem); }
       .hero-role { font-size: clamp(1rem, 4vw, 1.35rem); letter-spacing: 0.1em; }
-      .hero-desc { font-size: 0.95rem; max-width: 100%; }
+      .hero-desc { font-size: 1.02rem; max-width: 100%; font-weight: 600; line-height: 1.7; }
+      .hero-stack { font-size: 0.88rem; font-weight: 600; }
       .hero-stats {
         flex-direction: column;
         gap: 1.5rem;
@@ -975,10 +1061,12 @@
         padding-top: 1.5rem;
       }
       .hero-ctas { flex-direction: column; width: 100%; }
+      #hero .hero-ctas .btn-primary,
+      #hero .hero-ctas .btn-secondary,
       .btn-primary, .btn-secondary {
         width: 100%;
         text-align: center;
-        padding: 1rem 1.5rem;
+        padding: 1.1rem 1.5rem;
         cursor: pointer;
       }
 
@@ -1023,7 +1111,8 @@
       }
 
       .hero-name { font-size: clamp(2.2rem, 14vw, 3.2rem); }
-      .stat-val { font-size: 1.85rem; }
+      .stat-val { font-size: 2rem; font-weight: 700; }
+      .stat-lbl { font-size: 0.7rem; font-weight: 600; color: rgba(255, 255, 255, 0.9); }
 
       .section-title { font-size: clamp(1.75rem, 8vw, 2.4rem); }
       .divider { margin-bottom: 2.5rem; }
@@ -1071,7 +1160,7 @@
 <div id="cursor-ring"></div>
 
 <nav id="navbar">
-  <a href="#hero" class="nav-logo">NQ</a>
+  <a href="#" class="nav-logo" id="nav-logo">Nimrah Qureshi</a>
   <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
     <span></span><span></span><span></span>
   </button>
@@ -1087,11 +1176,10 @@
 
 <section id="hero">
   <div class="hero-content">
-    <div class="hero-eyebrow">Available for Frontend &amp; Full-Stack Roles</div>
     <h1 class="hero-name">
       <span class="name-first">Nimrah</span><br/><span class="name-gold">Qureshi</span>
     </h1>
-    <p class="hero-headline">Full-Stack JavaScript Developer</p>
+    <p class="hero-headline"><span id="typewriter"></span></p>
     <p class="hero-stack">React • Next.js • Node.js • TypeScript</p>
     <p class="hero-desc">
       I build high-performance web applications and national-scale education platforms — from polished React/Next.js interfaces to resilient APIs — serving <strong>100,000+ daily users</strong> in production.
@@ -1206,7 +1294,7 @@
 
     <a href="https://nodp.gov.pk/" target="_blank" rel="noopener noreferrer" class="project-card project-card--nodp reveal">
       <div>
-        <img src="image.png" alt="NODP logo" class="project-logo"/>
+        <img src="nodp-logo.png" alt="NODP logo" class="project-logo project-logo--nodp"/>
         <div class="project-num">01 / GOVERNMENT DATA PORTAL</div>
         <div class="project-name">NODP — National Open Data Portal</div>
         <div class="project-tech">MERN Stack · Microservices · PostgreSQL</div>
@@ -1401,8 +1489,14 @@ moveCursor();
 
 /* ── NAV EVENT SCRIPTS ─────────────────────────────────── */
 const nav = document.getElementById('navbar');
+const navLogo = document.getElementById('nav-logo');
 const navToggle = document.querySelector('.nav-toggle');
 const navLinks = document.querySelector('.nav-links');
+
+navLogo?.addEventListener('click', (e) => {
+  e.preventDefault();
+  location.reload();
+});
 
 navToggle?.addEventListener('click', () => {
   const open = document.body.classList.toggle('nav-open');
@@ -1492,6 +1586,60 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal, .timeline-item').forEach(el => observer.observe(el));
 
+/* ── ROTATING ROLE TYPEWRITER ──────────────────────────── */
+const roles = [
+  'React.js Developer',
+  'Next.js Developer',
+  'MERN Stack Developer',
+  'AI Developer',
+  'Full-Stack JavaScript Developer',
+  'TypeScript Developer',
+  'Node.js Developer',
+  'Frontend Developer'
+];
+const typewriterEl = document.getElementById('typewriter');
+
+function startRoleTypewriter() {
+  if (!typewriterEl) return;
+
+  if (prefersReducedMotion) {
+    typewriterEl.textContent = roles[0];
+    return;
+  }
+
+  let roleIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+
+  function typeRole() {
+    const current = roles[roleIndex];
+
+    if (!isDeleting) {
+      typewriterEl.textContent = current.slice(0, charIndex + 1);
+      charIndex += 1;
+      if (charIndex === current.length) {
+        setTimeout(() => { isDeleting = true; typeRole(); }, 2200);
+        return;
+      }
+      setTimeout(typeRole, 70);
+      return;
+    }
+
+    typewriterEl.textContent = current.slice(0, charIndex - 1);
+    charIndex -= 1;
+    if (charIndex === 0) {
+      isDeleting = false;
+      roleIndex = (roleIndex + 1) % roles.length;
+      setTimeout(typeRole, 400);
+      return;
+    }
+    setTimeout(typeRole, 35);
+  }
+
+  typeRole();
+}
+
+startRoleTypewriter();
 
 /* ── PINK BALLS + SCROLL PARTICLE DISSOLVE ─────────────── */
 const PARTICLES_PER_BALL = 10;
