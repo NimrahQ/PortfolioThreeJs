@@ -283,17 +283,36 @@
       font-weight: 700;
       color: #ffffff;
       letter-spacing: 0.05em;
-      margin-bottom: 0.85rem;
+      margin-bottom: 1.35rem;
       line-height: 1.3;
       min-height: 2.6rem;
     }
     .hero-stack {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.55rem;
+      margin-bottom: 2rem;
+    }
+    .hero-stack span {
       font-family: var(--font-mono);
-      font-size: clamp(0.9rem, 1.6vw, 1.05rem);
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      color: #ffffff;
-      margin-bottom: 1.75rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold-bright);
+      padding: 0.45rem 1rem;
+      border: 1px solid rgba(212, 178, 111, 0.35);
+      background: rgba(8, 6, 6, 0.35);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85);
+      transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease;
+    }
+    .hero-stack span:hover {
+      border-color: rgba(243, 224, 190, 0.65);
+      color: #fff;
+      background: rgba(8, 6, 6, 0.5);
     }
     .hero-role {
       font-family: var(--font-display); font-size: clamp(1.1rem, 2.5vw, 1.75rem);
@@ -301,18 +320,28 @@
       margin-bottom: 2.5rem; min-height: 2.5rem;
     }
     .hero-desc {
-      font-size: clamp(1.05rem, 1.6vw, 1.2rem);
-      font-weight: 600;
-      line-height: 1.75;
-      color: #ffffff;
-      max-width: 640px;
+      position: relative;
+      font-family: var(--font-display);
+      font-size: clamp(1.05rem, 1.85vw, 1.28rem);
+      font-weight: 400;
+      line-height: 1.7;
+      color: #e8d9c0;
+      max-width: 34rem;
       margin-bottom: 4rem;
-      letter-spacing: 0.015em;
+      letter-spacing: 0.03em;
+      padding-left: 1.35rem;
+      border-left: 1px solid rgba(212, 178, 111, 0.55);
       -webkit-font-smoothing: antialiased;
     }
-    .hero-desc strong {
+    .hero-desc em {
+      font-style: normal;
       color: var(--gold-bright);
-      font-weight: 800;
+      font-weight: 600;
+    }
+    .hero-desc strong {
+      color: #fff;
+      font-weight: 700;
+      letter-spacing: 0.04em;
     }
     
     .hero-stats {
@@ -1101,8 +1130,14 @@
 
       .hero-name { font-size: clamp(2.6rem, 12vw, 4.5rem); }
       .hero-role { font-size: clamp(1rem, 4vw, 1.35rem); letter-spacing: 0.1em; }
-      .hero-desc { font-size: 1.02rem; max-width: 100%; font-weight: 600; line-height: 1.7; }
-      .hero-stack { font-size: 0.88rem; font-weight: 600; }
+      .hero-desc {
+        font-size: 1.05rem;
+        max-width: 100%;
+        padding-left: 1rem;
+        line-height: 1.65;
+      }
+      .hero-stack { gap: 0.45rem; }
+      .hero-stack span { font-size: 0.65rem; padding: 0.4rem 0.85rem; }
       .hero-stats {
         flex-direction: column;
         gap: 1.5rem;
@@ -1233,9 +1268,14 @@
       <span class="name-first">Nimrah</span><br/><span class="name-gold">Qureshi</span>
     </h1>
     <p class="hero-headline"><span id="typewriter"></span></p>
-    <p class="hero-stack">React • Next.js • Node.js • TypeScript</p>
+    <div class="hero-stack" aria-label="Core technologies">
+      <span>React</span>
+      <span>Next.js</span>
+      <span>Node.js</span>
+      <span>TypeScript</span>
+    </div>
     <p class="hero-desc">
-      I build high-performance web applications and national-scale education platforms — from polished React/Next.js interfaces to resilient APIs — serving <strong>100,000+ daily users</strong> in production.
+      I build high-performance web applications and <em>national-scale education platforms</em> — from polished React/Next.js interfaces to resilient APIs — serving <strong>100,000+ daily users</strong> in production.
     </p>
     
     <div class="hero-stats">
