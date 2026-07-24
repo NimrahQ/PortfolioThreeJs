@@ -747,6 +747,33 @@
     .metric { font-family: var(--font-mono); font-size: 0.68rem; padding: 0.3rem 0.8rem; border: 1px solid var(--border-subtle); color: var(--text-main); background: rgba(255,255,255,0.01); }
     .project-url { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dark); margin-top: 1.25rem; letter-spacing: 0.04em; transition: color 0.3s; }
     a.project-card:hover .project-url { color: #ffffff; }
+    .project-card--nodp:hover .project-num,
+    .project-card--rsu:hover .project-num,
+    .project-card--dipixels:hover .project-num,
+    .project-card--nodp:hover .project-url,
+    .project-card--rsu:hover .project-url,
+    .project-card--dipixels:hover .project-url {
+      color: rgba(255, 255, 255, 0.88);
+    }
+    .project-card--nodp:hover .project-name,
+    .project-card--rsu:hover .project-name,
+    .project-card--dipixels:hover .project-name,
+    .project-card--nodp:hover .project-tech,
+    .project-card--rsu:hover .project-tech,
+    .project-card--dipixels:hover .project-tech,
+    .project-card--nodp:hover .project-desc,
+    .project-card--rsu:hover .project-desc,
+    .project-card--dipixels:hover .project-desc {
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 4px 18px rgba(0, 0, 0, 0.65);
+    }
+    .project-card--nodp:hover .metric,
+    .project-card--rsu:hover .metric,
+    .project-card--dipixels:hover .metric {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.35);
+      background: rgba(0, 0, 0, 0.45);
+    }
     .project-card--nodp::before {
       content: '';
       position: absolute;
@@ -754,8 +781,9 @@
       z-index: 0;
       background-image: linear-gradient(
           to bottom,
-          rgba(8, 8, 10, 0.82),
-          rgba(8, 8, 10, 0.56)
+          rgba(6, 6, 8, 0.92),
+          rgba(6, 6, 8, 0.84) 45%,
+          rgba(6, 6, 8, 0.9)
         ),
         url('nodp-login.png');
       background-size: cover;
@@ -774,8 +802,9 @@
       z-index: 0;
       background-image: linear-gradient(
           to bottom,
-          rgba(8, 8, 10, 0.82),
-          rgba(8, 8, 10, 0.56)
+          rgba(6, 6, 8, 0.92),
+          rgba(6, 6, 8, 0.84) 45%,
+          rgba(6, 6, 8, 0.9)
         ),
         url('rsu-login.png');
       background-size: cover;
@@ -794,8 +823,9 @@
       z-index: 0;
       background-image: linear-gradient(
           to bottom,
-          rgba(8, 8, 10, 0.82),
-          rgba(8, 8, 10, 0.56)
+          rgba(6, 6, 8, 0.92),
+          rgba(6, 6, 8, 0.84) 45%,
+          rgba(6, 6, 8, 0.9)
         ),
         url('dipixels.png');
       background-size: cover;
@@ -806,22 +836,6 @@
     }
     .project-card--dipixels:hover::before {
       opacity: 1;
-    }
-    .nodp-login-hint {
-      margin-top: 0.45rem;
-      font-family: var(--font-mono);
-      font-size: 0.64rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--gold-bright);
-      opacity: 0;
-      transform: translateY(4px);
-      transition: opacity 0.25s ease, transform 0.25s ease;
-      pointer-events: none;
-    }
-    a.project-card--nodp:hover .nodp-login-hint {
-      opacity: 1;
-      transform: translateY(0);
     }
     .project-card--internal { cursor: default; }
     .project-card--internal:hover { transform: none; }
@@ -1490,7 +1504,6 @@
           <span class="metric">High Availability</span>
         </div>
         <div class="project-url">nodp.gov.pk</div>
-        <div class="nodp-login-hint">nodp-login</div>
       </div>
     </a>
 

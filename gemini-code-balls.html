@@ -782,22 +782,6 @@
     .project-card--dipixels:hover::before {
       opacity: 1;
     }
-    .nodp-login-hint {
-      margin-top: 0.45rem;
-      font-family: var(--font-mono);
-      font-size: 0.64rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--gold-bright);
-      opacity: 0;
-      transform: translateY(4px);
-      transition: opacity 0.25s ease, transform 0.25s ease;
-      pointer-events: none;
-    }
-    a.project-card--nodp:hover .nodp-login-hint {
-      opacity: 1;
-      transform: translateY(0);
-    }
     .project-card--internal { cursor: default; }
     .project-card--internal:hover { transform: none; }
     .metric--muted { color: var(--text-dark); border-style: dashed; }
@@ -1401,7 +1385,6 @@
           <span class="metric">High Availability</span>
         </div>
         <div class="project-url">nodp.gov.pk</div>
-        <div class="nodp-login-hint">nodp-login</div>
       </div>
     </a>
 
