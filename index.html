@@ -253,10 +253,14 @@
         0 0 48px rgba(0, 0, 0, 0.85);
     }
     .hero-content .hero-name {
+      color: #f3e0be;
       text-shadow:
-        0 2px 4px rgba(0, 0, 0, 0.92),
-        0 6px 28px rgba(0, 0, 0, 0.88),
-        0 0 56px rgba(6, 6, 6, 0.8);
+        0 0 12px rgba(243, 224, 190, 0.55),
+        0 0 32px rgba(212, 178, 111, 0.4),
+        0 0 64px rgba(154, 123, 67, 0.28),
+        0 2px 4px rgba(0, 0, 0, 0.75),
+        0 6px 24px rgba(0, 0, 0, 0.55);
+      animation: nameGlow 3.2s ease-in-out infinite;
     }
     .hero-eyebrow {
       font-family: var(--font-mono); font-size: 0.8rem;
@@ -271,11 +275,32 @@
       line-height: 1.05;
       margin-bottom: 1rem;
       letter-spacing: -0.01em;
-      color: #e8d9c0;
+      color: #f3e0be;
+    }
+    .name-first {
+      color: #e8d4a8;
     }
     .name-gold {
       font-weight: 900;
-      color: #e8d9c0;
+      color: #ffe9c2;
+    }
+    @keyframes nameGlow {
+      0%, 100% {
+        text-shadow:
+          0 0 12px rgba(243, 224, 190, 0.5),
+          0 0 28px rgba(212, 178, 111, 0.32),
+          0 0 56px rgba(154, 123, 67, 0.22),
+          0 2px 4px rgba(0, 0, 0, 0.75),
+          0 6px 24px rgba(0, 0, 0, 0.55);
+      }
+      50% {
+        text-shadow:
+          0 0 18px rgba(255, 236, 196, 0.8),
+          0 0 42px rgba(212, 178, 111, 0.55),
+          0 0 78px rgba(154, 123, 67, 0.38),
+          0 2px 4px rgba(0, 0, 0, 0.75),
+          0 6px 24px rgba(0, 0, 0, 0.55);
+      }
     }
     .hero-headline {
       font-family: var(--font-display);
@@ -1062,6 +1087,67 @@
       padding: 1rem 1.75rem;
     }
 
+    /* ── BACK TO TOP ────────────────────────────────────── */
+    .back-to-top {
+      position: fixed;
+      right: 2rem;
+      bottom: 2.25rem;
+      z-index: 100;
+      width: 56px;
+      height: 56px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--gold-bright);
+      border-radius: 50%;
+      background: linear-gradient(145deg, #f3e0be 0%, #d4b26f 48%, #9a7b43 100%);
+      color: #1a1408;
+      text-decoration: none;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(16px) scale(0.85);
+      transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s, box-shadow 0.3s;
+      box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.45),
+        0 0 0 4px rgba(212, 178, 111, 0.18);
+    }
+    .back-to-top.is-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+      animation: backToTopPulse 2.2s ease-in-out infinite;
+    }
+    .back-to-top:hover {
+      color: #0a0a0c;
+      background: linear-gradient(145deg, #fff1d4 0%, #e4c58a 50%, #c9a55a 100%);
+      box-shadow:
+        0 14px 36px rgba(0, 0, 0, 0.5),
+        0 0 0 5px rgba(243, 224, 190, 0.28);
+      transform: translateY(-3px) scale(1.06);
+      animation: none;
+    }
+    .back-to-top svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    @keyframes backToTopPulse {
+      0%, 100% {
+        box-shadow:
+          0 10px 28px rgba(0, 0, 0, 0.45),
+          0 0 0 4px rgba(212, 178, 111, 0.18);
+      }
+      50% {
+        box-shadow:
+          0 12px 32px rgba(0, 0, 0, 0.5),
+          0 0 0 8px rgba(212, 178, 111, 0.32);
+      }
+    }
+
     /* ── FOOTER ─────────────────────────────────────────── */
     footer { text-align: center; padding: 3.5rem 4rem; border-top: 1px solid var(--border-subtle); background: var(--bg-panel); font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-dark); letter-spacing: 0.1em; }
 
@@ -1218,10 +1304,12 @@
       }
 
       footer { padding: 2.5rem 1.25rem; font-size: 0.62rem; }
+      .back-to-top { right: 1.25rem; bottom: 1.5rem; width: 52px; height: 52px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
+      .back-to-top.is-visible { animation: none; }
       .about-bg-slide {
         animation: none !important;
         opacity: 0 !important;
@@ -1234,6 +1322,7 @@
         transition: none !important;
       }
       #typewriter::after { animation: none; }
+      .hero-content .hero-name { animation: none; }
     }
 
   </style>
@@ -1390,7 +1479,7 @@
     <a href="https://nodp.gov.pk/" target="_blank" rel="noopener noreferrer" class="project-card project-card--nodp reveal">
       <div>
         <img src="nodp-logo.png" alt="NODP logo" class="project-logo project-logo--nodp"/>
-        <div class="project-num">01 / GOVERNMENT DATA PORTAL</div>
+        <div class="project-num">GOVERNMENT DATA PORTAL</div>
         <div class="project-name">NODP — National Open Data Portal</div>
         <div class="project-tech">MERN Stack · Microservices · PostgreSQL</div>
         <div class="project-desc">A government data portal engineered for secure, high-volume public-sector workflows with modular microservices and resilient role-based access controls.</div>
@@ -1408,7 +1497,7 @@
     <a href="https://rsusindh.gov.pk/" target="_blank" rel="noopener noreferrer" class="project-card project-card--rsu reveal">
       <div>
         <img src="rsu-logo.png" alt="RSU logo" class="project-logo"/>
-        <div class="project-num">02 / GOVERNMENT EDUCATION MANAGEMENT PORTAL</div>
+        <div class="project-num">GOVERNMENT EDUCATION MANAGEMENT PORTAL</div>
         <div class="project-name">RSU Sindh — Reform Support Unit</div>
         <div class="project-tech">SEMIS · School Census · Stipend Records · Monitoring Dashboards</div>
         <div class="project-desc">A government education management portal supporting policy implementation, school monitoring, analytics, geotagging, and public education services across Sindh.</div>
@@ -1425,7 +1514,7 @@
     <div class="project-card project-card--internal project-card--dipixels reveal">
       <div>
         <img src="dipixelsLogo.webp" alt="Dipixels logo" class="project-logo project-logo--dipixels"/>
-        <div class="project-num">03 / SOFTWARE DEVELOPMENT AGENCY</div>
+        <div class="project-num">SOFTWARE DEVELOPMENT AGENCY</div>
         <div class="project-name">Dipixels — IT Services &amp; Digital Agency</div>
         <div class="project-tech">React · Angular · Laravel · WordPress · Shopify · Figma</div>
         <div class="project-desc">IT services and consulting agency delivering custom software development, UI/UX design, branding, web/mobile development, e-commerce, and digital marketing solutions.</div>
@@ -1465,9 +1554,10 @@
       <div class="skill-chip-list">
         <span class="skill-chip skill-chip--primary">React.js</span>
         <span class="skill-chip skill-chip--primary">Next.js</span>
+        <span class="skill-chip">Three.js</span>
         <span class="skill-chip">Vue.js</span>
         <span class="skill-chip">Angular</span>
-        <span class="skill-chip">Tailwind</span>
+        <span class="skill-chip skill-chip--primary">Tailwind</span>
         <span class="skill-chip">MUI</span>
         <span class="skill-chip">Bootstrap</span>
         <span class="skill-chip">GSAP</span>
@@ -1565,6 +1655,13 @@
   </div>
 </section>
 
+<a href="#hero" class="back-to-top" id="back-to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M12 19V5"/>
+    <path d="M5 12l7-7 7 7"/>
+  </svg>
+</a>
+
 <footer>
   Nimrah Qureshi &copy; 2026 &middot; System Node Secured
 </footer>
@@ -1592,6 +1689,24 @@ const navLinks = document.querySelector('.nav-links');
 navLogo?.addEventListener('click', (e) => {
   e.preventDefault();
   location.reload();
+});
+
+const backToTop = document.getElementById('back-to-top');
+function updateBackToTop() {
+  if (!backToTop) return;
+  const doc = document.documentElement;
+  const scrollBottom = window.scrollY + window.innerHeight;
+  const nearEnd = scrollBottom >= doc.scrollHeight - window.innerHeight * 0.85;
+  backToTop.classList.toggle('is-visible', nearEnd);
+}
+backToTop?.addEventListener('click', (e) => {
+  e.preventDefault();
+  const hero = document.getElementById('hero');
+  if (hero) {
+    hero.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
+  } else {
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+  }
 });
 
 navToggle?.addEventListener('click', () => {
@@ -1657,11 +1772,13 @@ function updateAboutBgParallax() {
 
 updateActiveNav();
 updateAboutBgParallax();
+updateBackToTop();
 
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 40);
   updateActiveNav();
   updateAboutBgParallax();
+  updateBackToTop();
 }, { passive: true });
 
 window.addEventListener('resize', () => {
@@ -1669,6 +1786,7 @@ window.addEventListener('resize', () => {
     document.body.classList.remove('nav-open');
     navToggle?.setAttribute('aria-expanded', 'false');
   }
+  updateBackToTop();
 });
 
 /* ── VISIBILITY SCROLL REVEALS ─────────────────────────── */
